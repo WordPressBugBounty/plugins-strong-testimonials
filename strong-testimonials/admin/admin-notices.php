@@ -33,11 +33,16 @@ function wpmtst_admin_notices() {
 	}
 
 	foreach ( $notices as $key => $notice ) {
+
+		if ( ! is_array( $notice ) ) {
+			continue;
+		}
+
 		$message = apply_filters( 'wpmtst_' . $key . '_notice', '' );
 		if ( $message ) {
 			echo wp_kses_post( $message );
 		}
-		if ( ! $notice['persist'] ) {
+		if ( empty( $notice['persist'] ) ) {
 			wpmtst_delete_admin_notice( $key );
 		}
 	}

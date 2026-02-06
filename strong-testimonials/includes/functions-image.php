@@ -241,7 +241,6 @@ function wpmtst_thumbnail_img_platform_general( $img, $post_id, $size ) {
 	return sprintf( '<img src="%s" %s %s/>', $platform_user_photo, $width ? "width='{$width}'" : '', $height ? "height='{$height}'" : '' );
 }
 add_filter( 'wpmtst_thumbnail_img_platform_facebook', 'wpmtst_thumbnail_img_platform_general', 10, 3 );
-add_filter( 'wpmtst_thumbnail_img_platform_google', 'wpmtst_thumbnail_img_platform_general', 10, 3 );
 add_filter( 'wpmtst_thumbnail_img_platform_yelp', 'wpmtst_thumbnail_img_platform_general', 10, 3 );
 add_filter( 'wpmtst_thumbnail_img_platform_zomato', 'wpmtst_thumbnail_img_platform_general', 10, 3 );
 
@@ -294,3 +293,42 @@ function wpmtst_is_valid_image_url( $url ) {
 
 	return strpos( $status_line, '200 OK' ) !== false;
 }
+
+function wpmtst_thumbnail_img_platform_google( $img, $post_id, $size ) {
+
+	$platform_user_photo = get_post_meta( $post_id, 'platform_user_photo', true );
+	if ( ! $platform_user_photo ) {
+		return $img;
+	}
+
+	$width  = 60;
+	$height = 60;
+
+	if ( is_array( $size ) ) {
+		$width  = (int) $size[0];
+		$height = (int) $size[1];
+	}
+
+	$scaled_url = $platform_user_photo;
+
+	if ( false !== strpos( $platform_user_photo, 'googleusercontent.com' ) ) {
+		if ( preg_match( '/=s\d+(-c)?/', $platform_user_photo ) ) {
+			$scaled_url = preg_replace(
+				'/=s\d+(-c)?/',
+				'=s' . max( $width, $height ) . '-c',
+				$platform_user_photo
+			);
+		} else {
+			$scaled_url = $platform_user_photo . '=s' . max( $width, $height ) . '-c';
+		}
+	}
+
+	return sprintf(
+		'<img src="%s" width="%d" height="%d" />',
+		esc_url( $scaled_url ),
+		$width,
+		$height
+	);
+}
+
+add_filter( 'wpmtst_thumbnail_img_platform_google', 'wpmtst_thumbnail_img_platform_google', 10, 3 );

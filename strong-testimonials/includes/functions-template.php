@@ -333,6 +333,9 @@ function wpmtst_the_custom_field( $field ) {
 	if ( isset( $field['prop']['action_output'] ) && $field['prop']['action_output'] ) {
 		$value  = get_post_meta( $post->ID, $field_name, true );
 		$output = apply_filters( $field['prop']['action_output'], $field, $value );
+	} elseif ( has_filter( 'wpmtst_output_' . $field_name ) ) {
+		$value  = get_post_meta( $post->ID, $field_name, true );
+		$output = apply_filters( 'wpmtst_output_' . $field_name, $field, $value );
 	} else {
 		switch ( $field['type'] ) {
 			case 'link':
