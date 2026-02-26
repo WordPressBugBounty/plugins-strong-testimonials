@@ -4,7 +4,7 @@ Tags: testimonial plugin, testimonials slider, testimonial form, star ratings
 Requires at least: 5.2
 Requires PHP: 5.6
 Tested up to: 6.9
-Stable tag: 3.2.21
+Stable tag: 3.2.22
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -205,6 +205,9 @@ Please report security bugs found in the source code of the Strong Testimonials 
 8. View editor
 
 == Changelog ==
+= 3.2.22 - 26.02.2026 -
+- Fixed: Security issue - unquoted data attributes allowed attribute breakout via shortcode id (XSS). View ID is now sanitized to integer and container data attributes are rendered with quoted values and proper escaping.
+
 = 3.2.21 - 15.01.2026 -
 - Fixed: Only admins are allowed to export testimonials.
 
@@ -275,6 +278,9 @@ Please report security bugs found in the source code of the Strong Testimonials 
 You can read the complete changelog [here](https://github.com/WPChill/strong-testimonials/blob/master/changelog.txt)
 
 == Upgrade Notice ==
+
+= 3.2.22 =
+- Security update. Fixes a vulnerability where unquoted data attributes could allow attribute breakout (XSS) via the shortcode id. Recommended to update immediately.
 
 = 3.2.4 =
 - This version introduced a fix for a reported security vulnerability.

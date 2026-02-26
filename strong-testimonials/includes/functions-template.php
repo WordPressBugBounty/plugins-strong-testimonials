@@ -551,12 +551,15 @@ function wpmtst_container_class() {
 
 function wpmtst_container_data() {
 	$data_array = apply_filters( 'wpmtst_container_data', WPMST()->atts( 'container_data' ) );
-	if ( $data_array ) {
-		$data = '';
+	if ( $data_array && is_array( $data_array ) ) {
+		$parts = array();
 		foreach ( $data_array as $attr => $value ) {
-			$data .= " data-$attr=$value";
+			$attr    = sanitize_key( $attr );
+			$value   = esc_attr( (string) $value );
+			$parts[] = sprintf( ' data-%s="%s"', $attr, $value );
 		}
-		echo esc_attr( $data );
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Each part built from sanitize_key and esc_attr.
+		echo implode( '', $parts );
 	}
 }
 

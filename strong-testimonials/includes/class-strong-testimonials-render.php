@@ -647,9 +647,15 @@ class Strong_Testimonials_Render {
 	 * @return array
 	 */
 	public function parse_view( $out, $pairs, $atts ) {
-		// Convert "id" to "view"
-		if ( isset( $atts['id'] ) && $atts['id'] ) {
-			$atts['view'] = $atts['id'];
+		// Convert "id" to "view" - sanitize to integer to prevent attribute breakout (security).
+		if ( isset( $atts['id'] ) && $atts['id'] !== '' ) {
+			$raw_id  = trim( (string) $atts['id'] );
+			$view_id = absint( $raw_id );
+			// Reject non-numeric or malformed id (e.g. "1 onmouseover=alert(1)").
+			if ( $view_id < 1 || $raw_id !== (string) $view_id ) {
+				return array_merge( array( 'view_not_found' => 1 ), $atts );
+			}
+			$atts['view'] = $view_id;
 			unset( $atts['id'] );
 		} else {
 			return array_merge( array( 'view_not_found' => 1 ), $atts );
