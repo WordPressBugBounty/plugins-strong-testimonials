@@ -26,7 +26,7 @@ class Strong_Testimonials_Settings_Form {
 	 * Add actions and filters.
 	 */
 	public static function add_actions() {
-				add_action( 'wpmtst_register_settings', array( __CLASS__, 'register_settings' ) );
+		add_action( 'admin_init', array( __CLASS__, 'register_settings' ) );
 		add_action( 'wpmtst_form_tabs', array( __CLASS__, 'register_tab' ), 2, 2 );
 		add_filter( 'wpmtst_form_callbacks', array( __CLASS__, 'register_settings_page' ) );
 

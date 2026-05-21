@@ -90,7 +90,7 @@ class Strong_File_Logging {
 	 */
 	public function is_logging_enabled() {
 		$options = get_option( 'strong_testimonials_advanced_settings' );
-		if ( isset( $options['debug_log'] ) && 'on' === $options['debug_log'] ) {
+		if ( isset( $options['debug_log'] ) && ( 'on' === $options['debug_log'] || true === $options['debug_log'] ) ) {
 			$this->is_logging_enabled = true;
 		}
 	}

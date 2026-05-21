@@ -207,7 +207,7 @@ function wpmtst_view_get_mode_description() {
 	}
 
 	$mode    = isset( $_POST['mode'] ) ? sanitize_text_field( wp_unslash( $_POST['mode'] ) ) : 'display';
-	$options = get_option( 'wpmtst_view_options' );
+	$options = Strong_Testimonials_Defaults::get_view_options();
 	if ( isset( $options['mode'][ $mode ]['description'] ) ) {
 		$description         = $options['mode'][ $mode ]['description'];
 				$description = apply_filters( 'wpmtst_mode_description', $description, $mode );

@@ -45,7 +45,7 @@ optgroup option {
     padding-bottom: 15px; }
     .view-info .table-cell:first-child {
       padding-top: 9px;
-      min-width: 130px; }
+      width: 200px; }
   .view-info .table-row:last-child .table-cell {
     padding-bottom: 0; }
   .view-info label {

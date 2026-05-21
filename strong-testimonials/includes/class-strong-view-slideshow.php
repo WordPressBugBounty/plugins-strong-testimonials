@@ -142,7 +142,7 @@ if ( ! class_exists( 'Strong_View_Slideshow' ) ) :
 		 * TODO DRY
 		 */
 		public function build_classes() {
-			$options = get_option( 'wpmtst_view_options' );
+			$options = Strong_Testimonials_Defaults::get_view_options();
 
 			$container_class_list = array( 'strong-view-id-' . $this->atts['view'] );
 			$container_class_list = array_merge( $container_class_list, $this->get_template_css_class() );
@@ -327,8 +327,8 @@ if ( ! class_exists( 'Strong_View_Slideshow' ) ) :
 		 */
 		private function slideshow_args() {
 			$options        = get_option( 'wpmtst_options' );
-			$view_options   = apply_filters( 'wpmtst_view_options', get_option( 'wpmtst_view_options' ) );
-			$compat_options = get_option( 'wpmtst_compat_options' );
+			$view_options   = Strong_Testimonials_Defaults::get_view_options();
+			$compat_options = apply_filters( 'wpmtst_compat_options', get_option( 'wpmtst_compat_options', array() ) );
 
 			/**
 			 * Compatibility with lazy loading and use of imagesLoaded.
@@ -400,7 +400,7 @@ if ( ! class_exists( 'Strong_View_Slideshow' ) ) :
 				'slideCount'          => $this->post_count,
 				'debug'               => defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG && apply_filters( 'debug_strong_slider', true ),
 				'compat'              => $compat,
-				'touchEnabled'        => $options['touch_enabled'],
+				'touchEnabled'        => apply_filters( 'wpmtst_touch_enabled', true ),
 				'type'                => isset( $this->atts['slideshow_settings']['type'] ) ? $this->atts['slideshow_settings']['type'] : 'show_single',
 				'breakpoints'         => $new_breakpoints,
 			);

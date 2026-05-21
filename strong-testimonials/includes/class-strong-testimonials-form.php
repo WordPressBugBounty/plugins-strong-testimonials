@@ -24,7 +24,7 @@ class Strong_Testimonials_Form {
 	 * Add our actions.
 	 */
 	public function add_actions() {
-		add_action( 'init', array( $this, 'process_form' ), 20 );
+		add_action( 'init', array( $this, 'process_form' ), 200 );
 			//add_action( 'wpmtst_register_form_settings', array( $this, 'register_settings' ) );
 		add_action( 'wpmtst_form_tabs', array( $this, 'register_tab' ), 1, 2 );
 		add_filter( 'wpmtst_form_callbacks', array( $this, 'register_fields_page' ) );
@@ -262,6 +262,9 @@ class Strong_Testimonials_Form {
 						break;
 
 					case 'optional':
+						if ( ! isset( $new_post[ $field['name'] ] ) ) {
+							break;
+						}
 						if ( 'category' === strtok( $field['input_type'], '-' ) ) {
 							$testimonial_meta[ $field['name'] ] = $new_post[ $field['name'] ];
 						} elseif ( 'rating' === $field['input_type'] ) {

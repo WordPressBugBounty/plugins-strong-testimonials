@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E \"\\\\.php$\")",
+      "Bash(npm run:*)",
+      "Bash(del \"c:/Users/teoal/Local Sites/strongtestimonials/app/public/wp-content/plugins/strong-testimonials-pro/includes/extensions/properties/includes/get-properties-config.php\")"
+    ]
+  }
+}

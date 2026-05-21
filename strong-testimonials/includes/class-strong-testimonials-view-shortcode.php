@@ -119,7 +119,8 @@ class Strong_Testimonials_View_Shortcode {
 	 */
 	public function remove_whitespace( $html ) {
 		$options = get_option( 'wpmtst_options' );
-		if ( $options['remove_whitespace'] ) {
+		$saved_value = isset( $options['remove_whitespace'] ) ? (bool) $options['remove_whitespace'] : true;
+		if ( apply_filters( 'wpmtst_remove_whitespace_enabled', $saved_value ) ) {
 			return wpmtst_strip_whitespace( $html );
 		}
 

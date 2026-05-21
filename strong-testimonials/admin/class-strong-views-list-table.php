@@ -161,11 +161,18 @@ class Strong_Views_List_Table extends Strong_Testimonials_List_Table {
 
 		// Assemble links
 
-		$actions              = array();
-		$actions['edit']      = '<a href="' . esc_url( $edit_link ) . '">' . esc_html__( 'Edit', 'strong-testimonials' ) . '</a>';
-		$actions['duplicate'] = '<a href="' . esc_url( $duplicate_link ) . '">' . esc_html__( 'Duplicate', 'strong-testimonials' ) . '</a>';
-		// translators: %s is the name of the view that is going to be deleted.
-		$actions['delete'] = "<a class='submitdelete' href='" . wp_nonce_url( $delete_link, 'delete-strong-view_' . $item['id'] ) . "' onclick=\"if ( confirm( '" . esc_js( sprintf( __( 'Delete "%s"?', 'strong-testimonials' ), $item['name'] ) ) . "' ) ) { return true;} return false;\">" . esc_html__( 'Delete', 'strong-testimonials' ) . '</a>';
+		$default_views = get_option( 'wpmtst_default_views', array() );
+		$protected_ids = array_filter( array( $default_views['single_template'] ?? null ) );
+		$is_protected  = in_array( (string) $item['id'], array_map( 'strval', $protected_ids ), true );
+
+		$actions        = array();
+		$actions['edit'] = '<a href="' . esc_url( $edit_link ) . '">' . esc_html__( 'Edit', 'strong-testimonials' ) . '</a>';
+
+		if ( ! $is_protected ) {
+			$actions['duplicate'] = '<a href="' . esc_url( $duplicate_link ) . '">' . esc_html__( 'Duplicate', 'strong-testimonials' ) . '</a>';
+			// translators: %s is the name of the view that is going to be deleted.
+			$actions['delete'] = "<a class='submitdelete' href='" . wp_nonce_url( $delete_link, 'delete-strong-view_' . $item['id'] ) . "' onclick=\"if ( confirm( '" . esc_js( sprintf( __( 'Delete "%s"?', 'strong-testimonials' ), $item['name'] ) ) . "' ) ) { return true;} return false;\">" . esc_html__( 'Delete', 'strong-testimonials' ) . '</a>';
+		}
 
 		$actions = apply_filters( 'wpmtst_views_actions', $actions, $item );
 
@@ -187,17 +194,17 @@ class Strong_Views_List_Table extends Strong_Testimonials_List_Table {
 			case 'mode':
 				$mode         = $item['data']['mode'];
 				$text         = $mode;
-				$view_options = apply_filters( 'wpmtst_view_options', get_option( 'wpmtst_view_options' ) );
-				if ( isset( $view_options['mode'][ $mode ]['label'] ) ) {
-					$text = $view_options['mode'][ $mode ]['label'];
+				if ( 'single_template' === $mode ) {
+					$text = esc_html__( 'Single testimonial template.', 'strong-testimonials' );
+				} else {
+					$view_options = Strong_Testimonials_Defaults::get_view_options();
+					if ( isset( $view_options['mode'][ $mode ]['label'] ) ) {
+						$text = $view_options['mode'][ $mode ]['label'];
+					}
 				}
 				break;
 			case 'template':
-				if ( 'single_template' === $item['data']['mode'] ) {
-					$text = esc_html__( 'theme single post template', 'strong-testimonials' );
-				} else {
-					$text = $this->find_template( array( 'template' => $item['data']['template'] ) );
-				}
+				$text = $this->find_template( array( 'template' => $item['data']['template'] ) );
 				break;
 			case 'shortcode':
 				if ( 'single_template' === $item['data']['mode'] ) {

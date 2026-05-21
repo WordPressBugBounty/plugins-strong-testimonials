@@ -62,6 +62,7 @@ function wpmtst_admin_init() {
 }
 
 add_action( 'admin_init', 'wpmtst_admin_init' );
+add_action( 'admin_init', 'wpmtst_create_default_views', 20 );
 
 /**
  * Are we on a testimonial admin screen?
@@ -89,7 +90,10 @@ function wpmtst_pending_indicator( $menu ) {
 	}
 
 	$options = get_option( 'wpmtst_options' );
-	if ( ! isset( $options['pending_indicator'] ) || ! $options['pending_indicator'] ) {
+
+	$pending_indicator = isset( $options['pending_indicator'] ) && ! $options['pending_indicator'] ? false : true;
+
+	if ( ! apply_filters( 'wpmtst_enable_pending_indicator', $pending_indicator ) ) {
 		return $menu;
 	}
 

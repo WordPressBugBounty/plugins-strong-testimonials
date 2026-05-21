@@ -279,14 +279,19 @@ jQuery(document).ready(function ($) {
    * Plugin: Show/Hide parts based on current Mode
    */
   $.fn.updateScreen = function (mode, speed) {
-    speed = speed || 400;
+    speed = (speed !== undefined) ? speed : 400;
     if (!mode)
       return;
 
     var modeDesc = $('.mode-description');
     modeDesc.html('');
-    $('.then_' + mode).fadeIn(speed);
-    $('.then_not_' + mode).fadeOut(speed);
+    if (speed === 0) {
+      $('.then_' + mode).show();
+      $('.then_not_' + mode).hide();
+    } else {
+      $('.then_' + mode).fadeIn(speed);
+      $('.then_not_' + mode).fadeOut(speed);
+    }
 
     /**
      * Special handling
@@ -333,18 +338,18 @@ jQuery(document).ready(function ($) {
    * Single value
    */
   $.fn.toggleOption = function (el, speed) {
-    speed = speed || 400;
+    speed = (speed !== undefined) ? speed : 400;
     var option = $(el).attr('id').split('-').pop();
     var checked = $(el).prop('checked');
     var deps = '.then_' + option;
     var indeps = '.then_not_' + option;
     if (checked) {
-      $(deps).fadeIn(speed);
-      $(indeps).fadeOut(speed);
+      if (speed === 0) { $(deps).show(); $(indeps).hide(); }
+      else { $(deps).fadeIn(speed); $(indeps).fadeOut(speed); }
     }
     else {
-      $(deps).fadeOut(speed);
-      $(indeps).fadeIn(speed);
+      if (speed === 0) { $(deps).hide(); $(indeps).show(); }
+      else { $(deps).fadeOut(speed); $(indeps).fadeIn(speed); }
     }
     return this;
   };
@@ -493,7 +498,7 @@ jQuery(document).ready(function ($) {
   var $mode = $('#view-mode');
   var currentMode = $mode.find('input:checked').val();
   $mode.find('input:checked').closest('label').addClass('checked');
-  $.fn.updateScreen(currentMode);
+  $.fn.updateScreen(currentMode, 0);
 
   /**
    * Mode listener
@@ -518,7 +523,7 @@ jQuery(document).ready(function ($) {
    */
   function initialize () {
     $('.if.toggle').each(function (index, el) {
-      $.fn.toggleOption(this);
+      $.fn.toggleOption(this, 0);
       $(this).on('change', function () {
         $.fn.toggleOption(this);
       });

@@ -291,7 +291,7 @@ if ( ! class_exists( 'Strong_View_Display' ) ) :
 			 * @since 1.16
 			 */
 			if ( isset( $this->atts['order'] ) && 'random' === $this->atts['order'] ) {
-					$options = get_option( 'wpmtst_compat_options' );
+					$options = apply_filters( 'wpmtst_compat_options', get_option( 'wpmtst_compat_options', array() ) );
 				if ( isset( $options['random_js'] ) && $options['random_js'] ) {
 					WPMST()->render->add_script( 'wpmtst-random' );
 				} else {
@@ -490,14 +490,21 @@ if ( ! class_exists( 'Strong_View_Display' ) ) :
 				$nav = 'both';
 			}
 
+			$saved_scrolltop = isset( $options['scrolltop'] ) ? (bool) $options['scrolltop'] : true;
+			$saved_offset    = isset( $options['scrolltop_offset'] ) ? (int) $options['scrolltop_offset'] : 0;
+			$scrolltop       = apply_filters( 'wpmtst_scrolltop', array(
+				'enabled' => $saved_scrolltop,
+				'offset'  => $saved_offset,
+			) );
+
 			// Remember: top level is converted to strings!
 			$args = array(
 				'config' => array(
 					'pageSize'      => $this->atts['pagination_settings']['per_page'],
 					'currentPage'   => 1,
 					'pagerLocation' => $nav,
-					'scrollTop'     => $options['scrolltop'],
-					'offset'        => $options['scrolltop_offset'],
+					'scrollTop'     => $scrolltop['enabled'],
+					'offset'        => $scrolltop['offset'],
 					'imagesLoaded'  => true,
 				),
 			);

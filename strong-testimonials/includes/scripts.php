@@ -7,7 +7,7 @@ function wpmtst_scripts() {
 
 	$plugin_version = get_option( 'wpmtst_plugin_version' );
 	$options        = get_option( 'wpmtst_options' );
-	$compat_options = get_option( 'wpmtst_compat_options' );
+	$compat_options = apply_filters( 'wpmtst_compat_options', get_option( 'wpmtst_compat_options', array() ) );
 
 	$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 

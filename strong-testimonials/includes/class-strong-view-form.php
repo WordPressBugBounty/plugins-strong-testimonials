@@ -128,7 +128,17 @@ if ( ! class_exists( 'Strong_View_Form' ) ) :
 			/**
 			 * Locate template.
 			 */
-			$this->template_file = apply_filters( 'wpmtst_view_template_file_form', WPMST()->templates->get_template_attr( $this->atts, 'template' ) );
+			$form_atts = $this->atts;
+			if ( isset( $form_atts['form_template'] ) && $form_atts['form_template'] ) {
+				$form_atts['template'] = $form_atts['form_template'];
+			} else {
+				$form_atts['template'] = 'default-form';
+			}
+			$template_file = WPMST()->templates->get_template_attr( $form_atts, 'template' );
+			if ( ! $template_file ) {
+				$template_file = WPMST()->templates->get_template_attr( array( 'template' => 'default-form' ), 'template' );
+			}
+			$this->template_file = apply_filters( 'wpmtst_view_template_file_form', $template_file );
 
 			/**
 			 * Allow add-ons to hijack the output generation.

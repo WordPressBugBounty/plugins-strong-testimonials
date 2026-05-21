@@ -3,8 +3,8 @@ Contributors: wpchill,silkalns,cdillon27
 Tags: testimonial plugin, testimonials slider, testimonial form, star ratings
 Requires at least: 5.2
 Requires PHP: 5.6
-Tested up to: 6.9
-Stable tag: 3.2.22
+Tested up to: 7.0
+Stable tag: 3.3.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -205,6 +205,13 @@ Please report security bugs found in the source code of the Strong Testimonials 
 8. View editor
 
 == Changelog ==
+= 3.3.0 - 21.05.2026 -
+- Added: Support for extensions bundled in pro.
+- Fixed: Various issues and bugs.
+- Changed: Multiple improvements to the codebase.
+- Changed: Removed legacy settings that added complexity with little benefit.
+- Changed: Settings and Extensions redesign.
+
 = 3.2.22 - 26.02.2026 -
 - Fixed: Security issue - unquoted data attributes allowed attribute breakout via shortcode id (XSS). View ID is now sanitized to integer and container data attributes are rendered with quoted values and proper escaping.
 

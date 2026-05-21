@@ -1,3 +1,10 @@
+= 3.3.0 - 21.05.2026 -
+- Added: Support for extensions bundled in pro.
+- Fixed: Various issues and bugs.
+- Changed: Multiple improvements to the codebase.
+- Changed: Removed legacy settings that added complexity with little benefit.
+- Changed: Settings and Extensions redesign.
+
 = 3.2.21 - 15.01.2026 -
 - Fixed: Only admins are allowed to export testimonials.
 

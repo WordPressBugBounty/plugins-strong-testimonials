@@ -34,8 +34,8 @@ function wpmtst_register_cpt() {
 		register_taxonomy( 'wpm-testimonial-category', array( 'wpm-testimonial' ), apply_filters( 'wpmtst_taxonomy', $args ) );
 	}
 }
-// Less than 15 for WPML compatibility.
-add_action( 'init', 'wpmtst_register_cpt', 12 );
+
+add_action( 'init', 'wpmtst_register_cpt', 40 );
 
 
 /**
@@ -151,7 +151,9 @@ function wpmtst_get_tax_defaults() {
 function wpmtst_testimonial_supports( $supports ) {
 	$options = get_option( 'wpmtst_options' );
 
-	if ( isset( $options['support_custom_fields'] ) && $options['support_custom_fields'] ) {
+	$saved_value           = isset( $options['support_custom_fields'] ) && $options['support_custom_fields'];
+	$support_custom_fields = apply_filters( 'wpmtst_support_custom_fields', $saved_value );
+	if ( $support_custom_fields ) {
 		$supports[] = 'custom-fields';
 	}
 

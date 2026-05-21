@@ -27,8 +27,8 @@ class Strong_Testimonials_Admin_Scripts {
 		add_action( 'admin_print_styles-wpm-testimonial_page_testimonial-views', array( __CLASS__, 'admin_views' ) );
 		add_action( 'admin_print_styles-wpm-testimonial_page_testimonial-fields', array( __CLASS__, 'admin_fields' ) );
 		add_action( 'admin_print_styles-wpm-testimonial_page_testimonial-settings', array( __CLASS__, 'admin_settings' ) );
+		add_action( 'admin_print_styles-wpm-testimonial_page_strong-testimonials-extensions', array( __CLASS__, 'admin_extensions' ) );
 		add_action( 'admin_print_styles-wpm-testimonial_page_about-strong-testimonials', array( __CLASS__, 'admin_about' ) );
-		add_action( 'admin_print_styles-wpm-testimonial_page_testimonial-shortcodes', array( __CLASS__, 'admin_shortcodes' ) );
 		add_action( 'admin_print_styles-wpm-testimonial_page_strong-testimonials-logs', array( __CLASS__, 'admin_logs_view' ) );
 
 		add_action( 'load-edit.php', array( __CLASS__, 'admin_load_edit' ) );
@@ -127,24 +127,6 @@ class Strong_Testimonials_Admin_Scripts {
 			'wpmtst-admin-form-script',
 			WPMTST_ADMIN_URL . 'js/admin-form.js',
 			array( 'wpmtst-admin-script', 'autosize' ),
-			$plugin_version,
-			true
-		);
-
-		/**
-		 * Compatibility tab
-		 */
-		wp_register_style(
-			'wpmtst-admin-compat-style',
-			WPMTST_ADMIN_URL . 'css/admin-compat.css',
-			array(),
-			$plugin_version
-		);
-
-		wp_register_script(
-			'wpmtst-admin-compat-script',
-			WPMTST_ADMIN_URL . 'js/admin-compat.js',
-			array( 'jquery', 'wpmtst-custom-spinner', 'wpmtst-help' ),
 			$plugin_version,
 			true
 		);
@@ -256,25 +238,60 @@ class Strong_Testimonials_Admin_Scripts {
 		);
 
 		/**
-		 * Add-on licenses
+		 * Extensions
 		 *
-		 * @since 2.18
+		 * @since 3.3
 		 */
+		$extensions_asset_file = WPMTST_DIR . 'assets/dist/extensions/index.asset.php';
+		$extensions_asset      = file_exists( $extensions_asset_file )
+			? require $extensions_asset_file
+			: array(
+				'dependencies' => array( 'wp-components' ),
+				'version'      => $plugin_version,
+			);
+
 		wp_register_script(
-			'wpmtst-addons-script',
-			WPMTST_ADMIN_URL . 'js/addon-licenses.js',
-			array( 'jquery' ),
-			$plugin_version,
+			'wpmtst-extensions',
+			WPMTST_ASSETS_JS . 'extensions/index.js',
+			$extensions_asset['dependencies'],
+			$extensions_asset['version'],
 			true
 		);
 
-		$params = array(
-			'ajax_nonce'     => wp_create_nonce( 'wpmtst-admin' ),
-			'requiredField'  => esc_html__( 'This field is required.', 'strong-testimonials' ),
-			'errorMessage'   => esc_html__( 'An error occurred, please try again.', 'strong-testimonials' ),
-			'restoreDefault' => esc_html__( 'Restore the default settings?', 'strong-testimonials' ),
+		wp_register_style(
+			'wpmtst-extensions',
+			WPMTST_ASSETS_JS . 'extensions/index.css',
+			array(),
+			$extensions_asset['version']
 		);
-		wp_localize_script( 'wpmtst-addons-script', 'strongAddonAdmin', $params );
+
+		/**
+		 * General Settings (React)
+		 *
+		 * @since 3.3
+		 */
+		$general_settings_asset_file = WPMTST_DIR . 'assets/dist/general-settings/index.asset.php';
+		$general_settings_asset      = file_exists( $general_settings_asset_file )
+			? require $general_settings_asset_file
+			: array(
+				'dependencies' => array( 'react', 'react-jsx-runtime', 'wp-api-fetch', 'wp-components', 'wp-element', 'wp-i18n' ),
+				'version'      => $plugin_version,
+			);
+
+		wp_register_script(
+			'wpmtst-general-settings',
+			WPMTST_ASSETS_JS . 'general-settings/index.js',
+			$general_settings_asset['dependencies'],
+			$general_settings_asset['version'],
+			true
+		);
+
+		wp_register_style(
+			'wpmtst-general-settings',
+			WPMTST_ASSETS_JS . 'general-settings/index.css',
+			array( 'wp-components' ),
+			$general_settings_asset['version']
+		);
 
 		/**
 		 * Are You Sure? for dirty forms
@@ -402,29 +419,43 @@ class Strong_Testimonials_Admin_Scripts {
 	}
 
 	/**
-	 * Settings
+	 * Settings (React-based general settings page)
 	 */
 	public static function admin_settings() {
-		$tab = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : '';
+		wp_enqueue_style( 'wpmtst-general-settings' );
+		wp_enqueue_script( 'wpmtst-general-settings' );
 
-		switch ( $tab ) {
-			case 'compat':
-				wp_enqueue_style( 'wpmtst-admin-compat-style' );
-				wp_enqueue_script( 'wpmtst-admin-compat-script' );
-				break;
-			case 'licenses':
-				wp_enqueue_style( 'wpmtst-admin-style' );
-				wp_enqueue_script( 'wpmtst-addons-script' );
-				break;
-			default:
-				wp_enqueue_style( 'wpmtst-admin-style' );
-				wp_enqueue_script( 'wpmtst-admin-script' );
-				wp_add_inline_script(
-					'wpmtst-admin-script',
-					'const wpmtstAdminScriptNonce = "' . wp_create_nonce( 'wpmtst-admin-script-nonce' ) . '";',
-					'before'
-				);
-		}
+		wp_add_inline_script(
+			'wpmtst-general-settings',
+			'const wpmtstGeneralSettings = ' . wp_json_encode(
+				array(
+					'nonce'    => wp_create_nonce( 'wp_rest' ),
+					'adminUrl' => admin_url(),
+					'pluginUrl' => WPMTST_URL,
+				)
+			) . ';',
+			'before'
+		);
+	}
+
+
+	/**
+	 * Extensions
+	 */
+	public static function admin_extensions() {
+
+		wp_enqueue_style( 'wpmtst-extensions' );
+		wp_enqueue_script( 'wpmtst-extensions' );
+
+		wp_localize_script(
+			'wpmtst-extensions',
+			'extensionsStrings',
+			array(
+				'proExists' => defined( 'WPMTST_PRO_VERSION' ),
+				'offer'     => apply_filters( 'wpmtst_extensions_offer', new \stdClass() ),
+			),
+			'before'
+		);
 	}
 
 	/**
@@ -441,16 +472,6 @@ class Strong_Testimonials_Admin_Scripts {
 		);
 
 		wp_enqueue_style( 'wpmtst-about-style' );
-	}
-
-	/**
-	 * Shortcodes
-	 *
-	 * @since 2.31.0
-	 */
-	public static function admin_shortcodes() {
-		wp_enqueue_style( 'wpmtst-admin-style' );
-		wp_enqueue_style( 'wpmtst-rating-display' );
 	}
 
 	/**

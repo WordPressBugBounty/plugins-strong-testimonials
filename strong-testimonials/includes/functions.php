@@ -174,6 +174,10 @@ function wpmtst_get_custom_form_count() {
 function wpmtst_get_form_fields( $form_id = 1 ) {
 	$forms = get_option( 'wpmtst_custom_forms' );
 
+	if ( ! Strong_Testimonials_Extensions_Base::get_instance()->extension_enabled( 'strong-testimonials-multiple-forms' ) ) {
+		$form_id = 1;
+	}
+
 	if ( isset( $forms[ $form_id ] ) ) {
 		$form = $forms[ $form_id ];
 	} elseif ( isset( $forms[1] ) ) {

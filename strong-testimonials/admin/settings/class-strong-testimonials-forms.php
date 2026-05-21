@@ -77,11 +77,9 @@ class Strong_Testimonials_Forms {
 						call_user_func( self::$callbacks[ self::DEFAULT_TAB ] );
 					}
 
-					if ( has_action( 'wpmtst_settings_submit_row' ) ) {
-						echo '<p class="submit-buttons">';
-						do_action( 'wpmtst_settings_submit_row' );
-						echo '</p>';
-					}
+					echo '<p class="submit-buttons">';
+					submit_button( '', 'primary', 'submit-form', false );
+					echo '</p>';
 					?>
 				</form>
 				<?php do_action( 'wpmtst_admin_after_settings_form' ); ?>

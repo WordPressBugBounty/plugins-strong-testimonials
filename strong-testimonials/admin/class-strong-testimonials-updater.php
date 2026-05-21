@@ -121,13 +121,6 @@ class Strong_Testimonials_Updater {
 		update_option( 'wpmtst_compat_options', self::update_compat_options() );
 
 		/**
-		 * Overwrite default view options.
-		 *
-		 * @since 2.15.0
-		 */
-		update_option( 'wpmtst_view_options', self::update_view_options() );
-
-		/**
 		 * Overwrite default view settings.
 		 *
 		 * @since 2.15.0
@@ -184,6 +177,11 @@ class Strong_Testimonials_Updater {
 		 * Update admin notices.
 		 */
 		self::update_admin_notices();
+
+		/**
+		 * Ensure default views exist after every update.
+		 */
+		wpmtst_create_default_views();
 
 		delete_transient( 'wpmtst_update_in_progress' );
 	}
@@ -606,15 +604,6 @@ class Strong_Testimonials_Updater {
 		$options = array_merge( $defaults, $options );
 
 		return $options;
-	}
-
-	/**
-	 * View options.
-	 *
-	 * @return array
-	 */
-	public static function update_view_options() {
-		return Strong_Testimonials_Defaults::get_view_options();
 	}
 
 	/**

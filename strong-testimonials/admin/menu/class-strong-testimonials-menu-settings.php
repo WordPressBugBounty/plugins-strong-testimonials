@@ -48,8 +48,18 @@ class Strong_Testimonials_Menu_Settings {
 			'menu_title' => esc_html__( 'Settings', 'strong-testimonials' ),
 			'capability' => 'strong_testimonials_options',
 			'menu_slug'  => 'testimonial-settings',
-			'function'   => array( 'Strong_Testimonials_Settings', 'settings_page' ),
+			'function'   => array( __CLASS__, 'settings_page' ),
 		);
+	}
+
+	/**
+	 * Render the React-based settings page root element.
+	 */
+	public static function settings_page() {
+		if ( ! current_user_can( 'strong_testimonials_options' ) ) {
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'strong-testimonials' ) );
+		}
+		echo '<div id="wpmtst-general-settings-app"></div>';
 	}
 }
 
