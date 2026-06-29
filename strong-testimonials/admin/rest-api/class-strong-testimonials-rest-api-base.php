@@ -166,7 +166,7 @@ class Strong_Testimonials_Rest_Api_Base {
 		}
 
 		if ( ! class_exists( 'Strong_Testimonials_Pro\Extensions\Licensing' ) ) {
-			return new \WP_REST_Response( 'Modula Pro is not installed.', 400 );
+			return new \WP_REST_Response( 'Strong Testimonials Pro is not installed.', 400 );
 		}
 
 		$license = Strong_Testimonials_Pro\Extensions\Licensing::get_instance();

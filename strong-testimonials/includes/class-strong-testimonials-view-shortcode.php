@@ -84,6 +84,7 @@ class Strong_Testimonials_View_Shortcode {
 				<?php
 				return ob_get_clean();
 			}
+			return '';
 		}
 
 		switch ( $out['mode'] ) {

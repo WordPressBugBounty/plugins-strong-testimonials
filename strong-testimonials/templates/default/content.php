@@ -26,7 +26,7 @@ do_action( 'wpmtst_before_view' );
 
 					<?php wpmtst_the_title( 'h3', 'wpmtst-testimonial-heading testimonial-heading' ); ?>
 
-					<div <?php echo ( 'slideshow' === $atts['mode'] ) ? 'data-infinite-loop="' . esc_attr( $continuous_slide ) . '"' : ''; ?>   class="wpmtst-testimonial-content testimonial-content">
+					<div <?php echo ( 'slideshow' === ( $atts['mode'] ?? '' ) ) ? 'data-infinite-loop="' . esc_attr( $continuous_slide ) . '"' : ''; ?>   class="wpmtst-testimonial-content testimonial-content">
 
 						<?php wpmtst_the_thumbnail(); ?>
 						<div class="maybe-clear"></div>

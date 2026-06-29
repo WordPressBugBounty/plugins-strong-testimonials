@@ -1,3 +1,8 @@
+= 3.3.1 - 29.06.2026 =
+- Fixed: Multiple undefined array key PHP warnings.
+- Fixed: Wrong product name in REST API error response.
+- Fixed: CPT and taxonomy rewrite slugs should not be translatable.
+
 = 3.3.0 - 21.05.2026 -
 - Added: Support for extensions bundled in pro.
 - Fixed: Various issues and bugs.

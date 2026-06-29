@@ -13,7 +13,7 @@ function wpmtst_form_info() {
 		$fields[] = array(
 			'name'     => $field['name'],
 			'type'     => $field['input_type'],
-			'required' => $field['required'],
+			'required' => $field['required'] ?? null,
 		);
 
 		// Load rating stylesheet if necessary.

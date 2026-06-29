@@ -103,7 +103,7 @@ function wpmtst_get_cpt_defaults() {
 		'taxonomies'          => array( 'wpm-testimonial-category' ),
 		'has_archive'         => false,
 		'rewrite'             => array(
-			'slug'       => esc_html_x( 'testimonial', 'slug', 'strong-testimonials' ),
+			'slug'       => 'testimonial',
 			'with_front' => true,
 			'feeds'      => false,
 			'pages'      => true,
@@ -133,7 +133,7 @@ function wpmtst_get_tax_defaults() {
 	$args = array(
 		'labels'       => $labels,
 		'hierarchical' => true,
-		'rewrite'      => array( 'slug' => esc_html_x( 'testimonial-category', 'slug', 'strong-testimonials' ) ),
+		'rewrite'      => array( 'slug' => 'testimonial-category' ),
 	);
 
 	return $args;
