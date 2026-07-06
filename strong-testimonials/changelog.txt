@@ -1,4 +1,8 @@
-= 3.3.1 - 29.06.2026 =
+= 3.3.2 - 06.07.2026 =
+- Added: Admin notice if the used tempalte is no longer valid.
+- Added: Upsell for the Video extension.
+
+= 3.3.1 - 26.06.2026 =
 - Fixed: Multiple undefined array key PHP warnings.
 - Fixed: Wrong product name in REST API error response.
 - Fixed: CPT and taxonomy rewrite slugs should not be translatable.

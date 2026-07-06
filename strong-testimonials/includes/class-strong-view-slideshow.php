@@ -113,6 +113,8 @@ if ( ! class_exists( 'Strong_View_Slideshow' ) ) :
 
 			}
 
+			$html = $this->template_not_found_notice( isset( $this->atts['template'] ) ? $this->atts['template'] : '' ) . $html;
+
 			/**
 			 * Remove filters.
 			 */

@@ -10,8 +10,17 @@ optgroup option {
 
 /* structure */
 
+#fields-columns {
+  display: flex;
+}
+
+#fields-main {
+  flex: 0 1 1366px;
+}
+
 #left-col,
-#right-col {
+#right-col,
+#upsell-col {
   box-sizing: border-box;
 }
 
@@ -27,6 +36,11 @@ optgroup option {
   padding: 20px 0 20px 0;
 }
 
+#upsell-col {
+  flex: 1 1 300px;
+  padding: 20px 0 20px 30px;
+}
+
 #wpmtst-custom-fields-form {
   width: 100%;
 }
@@ -36,11 +50,6 @@ optgroup option {
   border: 1px solid #bbb;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
   min-height: 300px;
-}
-
-.wrap.wpmtst {
-  /*max-width: 1024px;*/
-	max-width: 1366px;
 }
 
 .wrap.wpmtst h3 {
@@ -303,15 +312,20 @@ p.field-group-label-wrap input {
  *--------------------------------------------------*/
 @media only screen and (max-width: 1024px) {
 
+  #fields-columns {
+    flex-direction: column;
+  }
+
   #left-col {
     width: 100%;
     padding: 20px 0;
   }
 
-  #right-col {
+  #right-col,
+  #upsell-col {
     width: 100%;
     border-left: 0;
-    padding: 20px;
+    padding: 20px 0;
   }
 
 }

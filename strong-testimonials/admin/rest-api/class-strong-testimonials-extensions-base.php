@@ -84,6 +84,7 @@ class Strong_Testimonials_Extensions_Base {
 				'strong-testimonials-mailchimp',
 				'strong-testimonials-custom-fields',
 				'strong-testimonials-multiple-forms',
+				'strong-testimonials-video',
 			)
 		);
 
@@ -215,6 +216,13 @@ class Strong_Testimonials_Extensions_Base {
 				'name'        => __( 'Multiple Forms', 'strong-testimonials' ),
 				'slug'        => 'strong-testimonials-multiple-forms',
 				'description' => __( 'Easily collect testimonials from customers by creating and customizing multiple forms at once.', 'strong-testimonials' ),
+			),
+			'strong-testimonials-video'            => array(
+				'available'   => false,
+				'enabled'     => false,
+				'name'        => __( 'Video', 'strong-testimonials' ),
+				'slug'        => 'strong-testimonials-video',
+				'description' => __( 'Allow your customers to record and submit video testimonials directly from their browser using their camera and microphone.', 'strong-testimonials' ),
 			),
 		);
 	}

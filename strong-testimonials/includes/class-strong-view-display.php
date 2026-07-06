@@ -200,6 +200,8 @@ if ( ! class_exists( 'Strong_View_Display' ) ) :
 				$post = $post_before;
 			}
 
+			$html = $this->template_not_found_notice( isset( $this->atts['template'] ) ? $this->atts['template'] : '' ) . $html;
+
 			/**
 			 * Remove filters.
 			 */

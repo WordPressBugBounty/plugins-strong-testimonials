@@ -165,6 +165,8 @@ if ( ! class_exists( 'Strong_View_Form' ) ) :
 			}
 			// TODO apply content filters
 
+			$html = $this->template_not_found_notice( $form_atts['template'] ) . $html;
+
 			/**
 			 * Remove filters here.
 			 */

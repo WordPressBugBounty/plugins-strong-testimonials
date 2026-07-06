@@ -164,10 +164,18 @@ function wpmtst_settings_custom_fields( $form_id = 1 ) {
 
 	$forms  = get_option( 'wpmtst_custom_forms' );
 	$fields = apply_filters( 'wpmtst_form_fields', $forms[ $form_id ]['fields'] );
+
+	ob_start();
+	do_action( 'wpmtst_fields_editor_upsell_col' );
+	$upsell_col = trim( ob_get_clean() );
 	?>
 
 	<div class="wrap wpmtst">
 	<?php do_action( 'wpmtst_fields_editor_before_fields_intro' ); ?>
+
+	<div id="fields-columns">
+
+	<div id="fields-main">
 
 	<div id="left-col">
 		<div>
@@ -218,6 +226,16 @@ function wpmtst_settings_custom_fields( $form_id = 1 ) {
 			<div><!-- placeholder --></div>
 		</div>
 	</div><!-- #right-col -->
+
+	</div><!-- #fields-main -->
+
+	<?php if ( $upsell_col ) : ?>
+	<div id="upsell-col">
+		<?php echo $upsell_col; ?>
+	</div><!-- #upsell-col -->
+	<?php endif; ?>
+
+	</div><!-- #fields-columns -->
 
 	</div><!-- .wrap -->
 	<?php

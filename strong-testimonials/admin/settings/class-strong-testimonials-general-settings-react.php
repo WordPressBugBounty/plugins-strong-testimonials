@@ -55,6 +55,7 @@ class Strong_Testimonials_General_Settings_React {
 		'strong-testimonials-mailchimp'        => 'Business',
 		'strong-testimonials-custom-fields'    => 'Business',
 		'strong-testimonials-multiple-forms'   => 'Business',
+		'strong-testimonials-video'            => 'Business',
 	);
 
 	/**

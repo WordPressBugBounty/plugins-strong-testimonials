@@ -102,6 +102,42 @@ if ( ! class_exists( 'Strong_View' ) ) :
 		}
 
 		/**
+		 * Warning message shown when the configured template doesn't exist
+		 * and the front end has silently fallen back to the default template.
+		 *
+		 * @param string $template_key The requested (unresolved) template key.
+		 *
+		 * @since 3.3.2
+		 * @return string
+		 */
+		public function template_not_found_notice( $template_key ) {
+			if ( ! $template_key || ! current_user_can( 'strong_testimonials_views' ) ) {
+				return '';
+			}
+
+			if ( in_array( $template_key, WPMST()->templates->get_template_keys(), true ) ) {
+				return '';
+			}
+
+			ob_start();
+			?>
+		<p style="color: #CD0000;">
+			<?php
+			printf(
+				/* translators: %s: template name */
+				esc_html__( 'Template "%s" not found. The default template is used instead.', 'strong-testimonials' ),
+				esc_html( $template_key )
+			);
+			?>
+			<br>
+			<span style="color: #777; font-size: 0.9em;"><?php esc_html_e( '(Only administrators see this message.)', 'strong-testimonials' ); ?></span>
+		</p>
+			<?php
+
+			return apply_filters( 'wpmtst_message_template_not_found', ob_get_clean(), $template_key, $this );
+		}
+
+		/**
 		 * Process the view.
 		 *
 		 * Used by main class to load the scripts and styles for this View.
@@ -332,7 +368,7 @@ if ( ! class_exists( 'Strong_View' ) ) :
 				return false;
 			}
 
-			$stylesheet = WPMST()->templates->get_template_attr( $this->atts, 'stylesheet', false );
+			$stylesheet = WPMST()->templates->get_template_attr( $this->atts, 'stylesheet', true );
 			if ( $stylesheet ) {
 				$handle = 'testimonials-' . str_replace( ':', '-', $this->get_att( 'template' ) );
 				$this->set_stylesheet( $handle );
@@ -359,14 +395,20 @@ if ( ! class_exists( 'Strong_View' ) ) :
 			$template_name     = isset( $this->atts['template'] ) ? $this->atts['template'] : '';
 			$template_settings = $this->get_att( 'template_settings' );
 
+			$template_object = WPMST()->templates->get_template_by_name( $template_name );
+
+			// If the configured template doesn't exist, fall back to default for CSS class.
+			if ( ! $template_object ) {
+				$template_name   = apply_filters( 'wpmtst_default_template', 'default', $this->atts );
+				$template_object = WPMST()->templates->get_template_by_name( $template_name );
+			}
+
 			// Maintain back-compat with template format version 1.0.
 			$class      = str_replace( ':content', '', $template_name );
 			$class      = str_replace( ':', '-', $class );
 			$class      = str_replace( '-form-form', '-form', $class );
 			$class      = $class . ' wpmtst-' . $class;
 			$class_list = array( $class );
-
-			$template_object = WPMST()->templates->get_template_by_name( $template_name );
 
 			if ( isset( $template_object['config']['options'] ) && is_array( ( $template_object['config']['options'] ) ) ) {
 

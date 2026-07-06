@@ -4,7 +4,7 @@ Tags: testimonial plugin, testimonials slider, testimonial form, star ratings
 Requires at least: 5.2
 Requires PHP: 5.6
 Tested up to: 7.0
-Stable tag: 3.3.1
+Stable tag: 3.3.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -205,7 +205,11 @@ Please report security bugs found in the source code of the Strong Testimonials 
 8. View editor
 
 == Changelog ==
-= 3.3.1 - 29.06.2026 =
+= 3.3.2 - 06.07.2026 =
+- Added: Admin notice if the used tempalte is no longer valid.
+- Added: Upsell for the Video extension.
+
+= 3.3.1 - 26.06.2026 =
 - Fixed: Multiple undefined array key PHP warnings.
 - Fixed: Wrong product name in REST API error response.
 - Fixed: CPT and taxonomy rewrite slugs should not be translatable.
