@@ -550,9 +550,9 @@ class Strong_Testimonials_Helper {
 		// Select default template if necessary
 		if ( ! $this->view['template'] ) {
 			if ( 'form' === $this->view['mode'] ) {
-				$this->view['template'] = 'default-form';
+				$this->view['template'] = 'default-form-theme';
 			} else {
-				$this->view['template'] = 'default';
+				$this->view['template'] = 'default-theme';
 			}
 		}
 
@@ -2183,7 +2183,13 @@ class Strong_Testimonials_Helper {
 			'display' => WPMST()->templates->get_templates( 'display' ),
 			'form'    => WPMST()->templates->get_templates( 'form' ),
 		);
-		$template_found = in_array( $this->view['template'], WPMST()->templates->get_template_keys(), true );
+
+		$current_template = $this->view['template'];
+		if ( 'form' === $this->current_type && ! isset( $templates['form'][ $current_template ] ) ) {
+			$current_template = $this->view['form_template'] ?? '';
+		}
+
+		$template_found = in_array( $current_template, WPMST()->templates->get_template_keys(), true );
 
 		?>
 		<td colspan="2">
@@ -2195,10 +2201,10 @@ class Strong_Testimonials_Helper {
 							<li>
 								<div>
 									<input class="error" type="radio"
-											id="<?php echo esc_attr( $this->view['template'] ); ?>"
+											id="<?php echo esc_attr( $current_template ); ?>"
 											name="view[data][<?php echo esc_attr( $this->current_mode ); ?>]"
-											value="<?php echo esc_attr( $this->view['template'] ); ?>" checked>
-									<label for="<?php echo esc_attr( $this->view['template'] ); ?>"><?php echo esc_html( $this->view['template'] ); ?></label>
+											value="<?php echo esc_attr( $current_template ); ?>" checked>
+									<label for="<?php echo esc_attr( $current_template ); ?>"><?php echo esc_html( $current_template ); ?></label>
 								</div>
 								<div class="template-description">
 									<p>
@@ -2217,7 +2223,7 @@ class Strong_Testimonials_Helper {
 								<div>
 									<input type="radio" id="template-<?php echo esc_attr( $key ); ?>"
 											name="view[data][<?php echo esc_attr( $this->current_mode ); ?>]"
-											value="<?php echo esc_attr( $key ); ?>" <?php checked( $key, $this->view['template'] ); ?>>
+											value="<?php echo esc_attr( $key ); ?>" <?php checked( $key, $current_template ); ?>>
 									<label for="template-<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $template['config']['name'] ); ?></label>
 								</div>
 								<div class="template-description">

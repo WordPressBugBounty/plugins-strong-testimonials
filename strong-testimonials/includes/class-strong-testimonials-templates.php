@@ -187,7 +187,7 @@ class Strong_Templates {
 
 		// [3]
 		if ( $use_default ) {
-			$template_search[] = apply_filters( 'wpmtst_default_template', 'default', $atts );
+			$template_search[] = apply_filters( 'wpmtst_default_template', 'default-theme', $atts );
 		}
 
 		// Search list of already found template files. Stop at first match.
@@ -239,7 +239,7 @@ class Strong_Templates {
 
 		// [3]
 		if ( $use_default ) {
-			$template_search[] = apply_filters( 'wpmtst_default_template', 'default', $atts );
+			$template_search[] = apply_filters( 'wpmtst_default_template', 'default-theme', $atts );
 		}
 
 		// Search list of already found template files. Stop at first match.

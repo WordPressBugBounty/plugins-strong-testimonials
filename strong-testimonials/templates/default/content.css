@@ -347,7 +347,7 @@ Thanks https://css-tricks.com/minimum-paragraph-widths/
   color: #FFF;
 }
 
-.disabled {
+.strong-view.wpmtst-default .disabled {
   display: none !important;
 }
 

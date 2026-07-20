@@ -1,3 +1,7 @@
+= 3.3.3 - 20.07.2026 =
+- Added: New default Display and Form templates that inherit the active theme's styles.
+- Fixed: Scoped global `.disabled` CSS rule.
+
 = 3.3.2 - 06.07.2026 =
 - Added: Admin notice if the used tempalte is no longer valid.
 - Added: Upsell for the Video extension.

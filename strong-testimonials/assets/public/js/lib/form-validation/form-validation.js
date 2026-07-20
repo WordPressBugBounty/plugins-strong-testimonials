@@ -163,7 +163,7 @@ class strongValidation {
 						if (instance.settings.scroll.onError) {
 							if (typeof validator.errorList[0] !== 'undefined') {
 								var firstError  = jQuery(validator.errorList[0].element);
-								var fieldOffset = firstError.closest('.form-field').offset();
+								var fieldOffset = firstError.closest('.form-field, .wpmtst-form-field').offset();
 								var scrollTop   = fieldOffset.top - instance.settings.scroll.onErrorOffset;
 								jQuery('html, body').animate({scrollTop: scrollTop}, 800, function () {
 									firstError.focus();
@@ -209,14 +209,14 @@ class strongValidation {
 				rules: this.rules,
 
 				errorPlacement: function (error, element) {
-					error.appendTo(element.closest('div.form-field'));
+					error.appendTo(element.closest('div.form-field, div.wpmtst-form-field'));
 				},
 
 				highlight: function (element, errorClass, validClass) {
 					if (element.type === 'checkbox') {
-						jQuery(element).closest('.field-wrap').addClass(errorClass).removeClass(validClass);
+						jQuery(element).closest('.field-wrap, .wpmtst-field-wrap').addClass(errorClass).removeClass(validClass);
 					} else if ('rating' === jQuery(element).data('fieldType')) {
-						jQuery(element).closest('.field-wrap').addClass(errorClass).removeClass(validClass);
+						jQuery(element).closest('.field-wrap, .wpmtst-field-wrap').addClass(errorClass).removeClass(validClass);
 					} else {
 						jQuery(element).addClass(errorClass).removeClass(validClass);
 					}
@@ -224,9 +224,9 @@ class strongValidation {
 
 				unhighlight: function (element, errorClass, validClass) {
 					if (element.type === 'checkbox') {
-						jQuery(element).closest('.field-wrap').removeClass(errorClass).addClass(validClass);
+						jQuery(element).closest('.field-wrap, .wpmtst-field-wrap').removeClass(errorClass).addClass(validClass);
 					} else if ('rating' === jQuery(element).data('fieldType')) {
-						jQuery(element).closest('.field-wrap').removeClass(errorClass).addClass(validClass);
+						jQuery(element).closest('.field-wrap, .wpmtst-field-wrap').removeClass(errorClass).addClass(validClass);
 					} else {
 						jQuery(element).removeClass(errorClass).addClass(validClass);
 					}
@@ -251,11 +251,11 @@ class strongValidation {
 		} else {
 			for (var key in obj.errors) {
 				if (obj.errors.hasOwnProperty(key)) {
-					this.form.children('.field-' + key)
-						.find('span.error')
+					this.form.children('.field-' + key + ', .wpmtst-field-' + key)
+						.find('span.error, span.wpmtst-error')
 						.remove()
 						.end()
-						.append('<span class="error">' + obj.errors[key] + '</span>');
+						.append('<span class="error wpmtst-error">' + obj.errors[key] + '</span>');
 				}
 			}
 		}

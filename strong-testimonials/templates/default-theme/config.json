@@ -1,0 +1,11 @@
+{
+  "name": "Default",
+  "description": "Inherits your theme's styles for a seamless look.",
+  "type": "display",
+  "order": 1,
+  "scripts": "",
+  "styles": "",
+  "force": "",
+  "options": [],
+  "format_version": "2.0"
+}

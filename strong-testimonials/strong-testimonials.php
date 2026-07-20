@@ -5,7 +5,7 @@
  * Description: Collect and display your testimonials or reviews.
  * Author: WPChill
  * Author URI: https://wpchill.com/
- * Version: 3.3.2
+ * Version: 3.3.3
  * Text Domain: strong-testimonials
  * Domain Path: /languages
  * Requires: 4.6 or higher
@@ -19,7 +19,6 @@
  *
  * Original Plugin URI:         https://strongplugins.com/plugins/strong-testimonials
  * Original Author URI:         https://strongplugins.com
- * Original Author:             https://profiles.wordpress.org/cdillon27/
  *
  * NOTE:
  * Chris Dillon ownership rights were ceased on: 01/20/2019 06:52:23 PM when ownership was turned over to MachoThemes
@@ -45,7 +44,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WPMTST_VERSION', '3.3.2' );
+define( 'WPMTST_VERSION', '3.3.3' );
 
 define( 'WPMTST_PLUGIN', plugin_basename( __FILE__ ) ); // strong-testimonials/strong-testimonials.php
 define( 'WPMTST', dirname( WPMTST_PLUGIN ) );           // strong-testimonials

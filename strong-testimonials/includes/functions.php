@@ -174,6 +174,10 @@ function wpmtst_get_custom_form_count() {
 function wpmtst_get_form_fields( $form_id = 1 ) {
 	$forms = get_option( 'wpmtst_custom_forms' );
 
+	if ( ! $forms ) {
+		$forms = Strong_Testimonials_Defaults::get_custom_forms();
+	}
+
 	if ( ! Strong_Testimonials_Extensions_Base::get_instance()->extension_enabled( 'strong-testimonials-multiple-forms' ) ) {
 		$form_id = 1;
 	}
@@ -189,6 +193,31 @@ function wpmtst_get_form_fields( $form_id = 1 ) {
 	$fields = $form['fields'];
 
 	return $fields;
+}
+
+/**
+ * Whether a form has a field with the given name.
+ *
+ * @param int    $form_id
+ * @param string $field_name
+ *
+ * @since 3.4.0
+ * @return bool
+ */
+function wpmtst_form_has_field( $form_id, $field_name ) {
+	$fields = wpmtst_get_form_fields( $form_id );
+
+	if ( ! is_array( $fields ) ) {
+		return false;
+	}
+
+	foreach ( $fields as $field ) {
+		if ( isset( $field['name'] ) && $field_name === $field['name'] ) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 /**

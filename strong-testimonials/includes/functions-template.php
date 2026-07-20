@@ -545,6 +545,29 @@ function wpmtst_the_custom_field( $field ) {
 	return $output;
 }
 
+/**
+ * Same as wpmtst_the_custom_field(), but wraps the result in a <p> instead
+ * of a <div> so themes that style paragraph typography (e.g. .wp-block-paragraph)
+ * apply to it.
+ *
+ * @param array $field
+ *
+ * @since 3.4.0
+ * @return string
+ */
+function wpmtst_the_custom_field_as_paragraph( $field ) {
+	$output = wpmtst_the_custom_field( $field );
+
+	if ( ! $output ) {
+		return '';
+	}
+
+	$output = preg_replace( '/^<div /', '<p ', $output, 1 );
+	$output = preg_replace( '/<\/div>$/', '</p>', $output, 1 );
+
+	return $output;
+}
+
 function wpmtst_container_class() {
 	echo esc_attr( apply_filters( 'wpmtst_container_class', WPMST()->atts( 'container_class' ) ) );
 }

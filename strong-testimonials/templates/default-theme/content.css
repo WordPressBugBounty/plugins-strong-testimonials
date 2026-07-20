@@ -1,0 +1,287 @@
+/**
+ * Strong Testimonials Default template
+ */
+
+/* Base
+-----------------------------------------------*/
+.strong-view.wpmtst-default-theme {
+  display: block;
+  width: 100%;
+}
+.strong-view.wpmtst-default-theme div {
+  box-sizing: border-box;
+}
+.strong-view.wpmtst-default-theme .wpmtst-testimonial {
+  max-height: none;
+  max-width: none;
+  width: 100%;
+}
+.strong-view.wpmtst-default-theme .wpmtst-testimonial-inner {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.strong-view.wpmtst-default-theme a.readmore,
+.strong-view.wpmtst-default-theme a.readmore-toggle {
+  white-space: nowrap;
+  z-index: 100;
+}
+.strong-view.wpmtst-default-theme a.readmore-toggle:hover {
+  cursor: pointer;
+}
+
+.strong-view.slider-container {
+  opacity: 1;
+}
+.strong-view .screen-reader-text {
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  overflow: hidden;
+  position: absolute !important;
+  width: 1px;
+  word-wrap: normal !important;
+}
+
+/* Card
+-----------------------------------------------*/
+.strong-view.wpmtst-default-theme .strong-content {
+  margin: 20px auto 0;
+}
+/*
+ * Masonry absolutely-positions .wpmtst-testimonial and computes each item's
+ * position from its measured box size. Padding is always included in that
+ * measurement; margin is not reliable once an item is taken out of flow.
+ * So all inter-item spacing lives here as padding, and the visible card
+ * (border/radius) moves to the inner element.
+ */
+.strong-view.wpmtst-default-theme .wpmtst-testimonial {
+  /* top padding clears the avatar, which overlaps half its own height above the inner border */
+  padding-top: calc(var(--wpmtst-avatar-size, 0px) / 2 + 20px);
+  padding-bottom: 20px;
+}
+.strong-view.wpmtst-default-theme .wpmtst-testimonial-inner {
+  position: relative;
+  border: 1px solid;
+  border-color: inherit;
+  border-radius: inherit;
+  /* top padding clears the avatar's own bottom edge (half its height below the border), plus a gap */
+  padding: calc(var(--wpmtst-avatar-size, 0px) / 2 + 20px) 50px 50px;
+}
+.strong-view.wpmtst-default-theme .wpmtst-testimonial-inner > * {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+.strong-view.wpmtst-default-theme .wpmtst-testimonial-inner > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Avatar
+-----------------------------------------------*/
+.strong-view.wpmtst-default-theme .wpmtst-testimonial-avatar {
+  position: absolute;
+  top: calc(var(--wpmtst-avatar-size, 0px) / -2);
+  left: 50px;
+  margin: 0;
+  z-index: 1;
+}
+.strong-view.wpmtst-default-theme .wpmtst-testimonial-avatar img {
+  display: block;
+  max-width: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid;
+  border-color: inherit;
+}
+
+/* Name / company / rating
+-----------------------------------------------*/
+.strong-view.wpmtst-default-theme .testimonial-company {
+  font-weight: 600;
+  opacity: 0.75;
+}
+.strong-view.wpmtst-default-theme .testimonial-company a {
+  text-decoration: none;
+}
+.strong-view.wpmtst-default-theme .testimonial-rating .strong-rating {
+  display: inline-block;
+}
+.strong-view.wpmtst-default-theme .testimonial-rating .star svg path {
+  fill: #ffb900;
+}
+.strong-view.wpmtst-default-theme .testimonial-rating .star svg {
+  width: 20px;
+}
+
+/* Quote
+-----------------------------------------------*/
+.strong-view.wpmtst-default-theme .wpmtst-testimonial-content {
+  margin: 0;
+}
+.strong-view.wpmtst-default-theme .wpmtst-testimonial-content p:first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+}
+.strong-view.wpmtst-default-theme .wpmtst-testimonial-content p:last-of-type {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.strong-view.wpmtst-default-theme .wpmtst-testimonial-content p:first-of-type::before {
+  content: "\201C";
+}
+.strong-view.wpmtst-default-theme .wpmtst-testimonial-content p:last-of-type::after {
+  content: "\201D";
+}
+
+.strong-view.wpmtst-default-theme .readmore {
+  margin-top: 1em;
+}
+.strong-view.wpmtst-default-theme .strong-view-footer {
+  margin-bottom: 20px;
+}
+.strong-view.wpmtst-default-theme .readmore-page {
+  margin-top: 20px;
+  padding: 1em;
+  text-align: center;
+  border: 1px solid;
+  border-color: inherit;
+}
+
+/* Pagination
+-----------------------------------------------*/
+/* Simple pagination
+-----------------------------------------------*/
+.strong-view.wpmtst-default-theme.strong-pager {
+  display: none;
+}
+
+.simplePagerList {
+  /* match .strong-content container */
+  margin: 20px auto;
+  text-align: center;
+}
+
+.strong-view ul.simplePagerNav {
+  margin: 0 auto;
+  padding: 0;
+  display: inline-block;
+}
+.strong-view ul.simplePagerNav li {
+  display: inline;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.strong-view ul.simplePagerNav li a {
+  margin: 0 0.2em;
+  padding: 0.1em 0.3em;
+  outline: none;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+.strong-view ul.simplePagerNav li a:hover {
+  background: #BBB;
+  color: #FFF;
+}
+.strong-view ul.simplePagerNav li.currentPage a {
+  text-decoration: none;
+  background: #999;
+  color: #FFF;
+}
+
+.strong-view.rtl ul.simplePagerNav li {
+  float: right;
+}
+
+/* Standard pagination
+-----------------------------------------------*/
+.strong-view .nav-links {
+  margin: 20px auto;
+  text-align: center;
+}
+.strong-view .nav-links a, .strong-view .nav-links span {
+  display: inline-block;
+  line-height: 1.5;
+  margin: 0 0.2em;
+  padding: 0.1em 0.3em;
+  transition: background 0.2s ease;
+}
+.strong-view .nav-links a.current, .strong-view .nav-links span.current {
+  background: #999;
+  color: #FFF;
+}
+.strong-view .nav-links a {
+  outline: none;
+  text-decoration: none;
+}
+.strong-view .nav-links a:hover,
+.strong-view .nav-links a.prev:hover,
+.strong-view .nav-links a.next:hover,
+.strong-view .nav-links span:hover {
+  background: #BBB;
+  color: #FFF;
+}
+
+/* Slideshow
+-----------------------------------------------*/
+.strong-view.wpmtst-default-theme.slider-container.slider-adaptive:not(.slider-mode-horizontal) .wpmslider-viewport {
+  border: 1px solid;
+  border-color: inherit;
+}
+.strong-view.wpmtst-default-theme.slider-container.slider-adaptive:not(.slider-mode-horizontal) .wpmtst-testimonial-inner {
+  border: 0;
+}
+.strong-view.wpmtst-default-theme.slider-container .strong-content {
+  margin: 0 auto;
+}
+.strong-view.wpmtst-default-theme.slider-container .wpmtst-testimonial:not(:first-child) {
+  display: none;
+}
+.strong-view.wpmtst-default-theme.nav-position-inside .wpmtst-testimonial-inner {
+  padding-bottom: 48px;
+}
+.strong-view.wpmtst-default-theme.controls-type-sides .wpmtst-testimonial-inner {
+  padding-left: 50px;
+  padding-right: 50px;
+}
+.strong-view.wpmtst-default-theme.slider-stretch .wpmtst-testimonial-inner {
+  /* to force same height for all slides */
+  height: 100%;
+}
+
+/* RTL
+-----------------------------------------------*/
+.strong-view.wpmtst-default-theme.rtl .wpmtst-testimonial,
+.strong-view.wpmtst-default-theme.rtl .wpmtst-testimonial-inner {
+  text-align: right;
+}
+.strong-view.wpmtst-default-theme.rtl .wpmtst-testimonial-field {
+  text-align: right;
+}
+
+.strong-view.wpmtst-default-theme .disabled {
+  display: none !important;
+}
+
+.wpmslider-controls.disabled {
+    display: block !important;
+}
+
+/*  Compatibility with metaslider pro layers display
+----------------------------------------------------*/
+
+.msHtmlOverlay .layer .disabled {
+    display: block !important;
+}
+
+
+/*  Readmore Inline
+----------------------------------------------------*/
+.readmore-excerpt-inline,
+.readmore-content-inline:not([hidden]),
+.readmore-content-inline:not([hidden]) p {
+    display: inline;
+}
+
+.wpmtst-inline-readme {
+    margin-left: 5px;
+}

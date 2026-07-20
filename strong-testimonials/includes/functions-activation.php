@@ -138,8 +138,45 @@ function wpmtst_create_default_views() {
 
 	// Testimonials Display — create once; if stored ID exists the user has already seen/deleted it.
 	if ( ! isset( $stored_ids['display'] ) && ! wpmtst_mode_view_exists( $table, 'display' ) ) {
-		$view         = Strong_Testimonials_Defaults::get_default_view();
-		$view['mode'] = 'display';
+		$view                     = Strong_Testimonials_Defaults::get_default_view();
+		$view['mode']             = 'display';
+		$view['title']            = 'hidden';
+		$view['thumbnail_size']   = 'custom';
+		$view['thumbnail_width']  = 100;
+		$view['thumbnail_height'] = 100;
+
+		// Only offer fields that actually exist on the linked form.
+		$client_section = array();
+		if ( wpmtst_form_has_field( $view['form_id'], 'client_name' ) ) {
+			$client_section[] = array(
+				'field'  => 'client_name',
+				'type'   => 'author',
+				'before' => '',
+				'class'  => 'testimonial-name',
+			);
+		}
+		if ( wpmtst_form_has_field( $view['form_id'], 'company_name' ) ) {
+			$client_section[] = array(
+				'field'   => 'company_name',
+				'type'    => 'link',
+				'before'  => '',
+				'url'     => 'company_website',
+				'class'   => 'testimonial-company',
+				'new_tab' => true,
+			);
+		}
+		if ( wpmtst_form_has_field( $view['form_id'], 'star_rating' ) ) {
+			$client_section[] = array(
+				'field'  => 'star_rating',
+				'type'   => 'rating',
+				'before' => '',
+				'class'  => 'testimonial-rating',
+			);
+		}
+		if ( $client_section ) {
+			$view['client_section'] = $client_section;
+		}
+
 		$wpdb->query( // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$wpdb->prepare(
 				"INSERT INTO {$table} (name, value) VALUES (%s, %s)",
@@ -160,9 +197,8 @@ function wpmtst_create_default_views() {
 
 	// Testimonials Collection Form — create once; if stored ID exists the user has already seen/deleted it.
 	if ( ! isset( $stored_ids['form'] ) && ! wpmtst_mode_view_exists( $table, 'form' ) ) {
-		$view               = Strong_Testimonials_Defaults::get_default_view();
-		$view['mode']     = 'form';
-		$view['template'] = 'default-form';
+		$view         = Strong_Testimonials_Defaults::get_default_view();
+		$view['mode'] = 'form';
 		$wpdb->query( // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$wpdb->prepare(
 				"INSERT INTO {$table} (name, value) VALUES (%s, %s)",

@@ -1,8 +1,8 @@
 {
-  "name": "Default",
+  "name": "Classic",
   "description": "A classic style.",
   "type": "display",
-  "order": 1,
+  "order": 5,
   "scripts": "",
   "styles": "",
   "force": "",

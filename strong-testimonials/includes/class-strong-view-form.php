@@ -132,11 +132,11 @@ if ( ! class_exists( 'Strong_View_Form' ) ) :
 			if ( isset( $form_atts['form_template'] ) && $form_atts['form_template'] ) {
 				$form_atts['template'] = $form_atts['form_template'];
 			} else {
-				$form_atts['template'] = 'default-form';
+				$form_atts['template'] = 'default-form-theme';
 			}
 			$template_file = WPMST()->templates->get_template_attr( $form_atts, 'template' );
 			if ( ! $template_file ) {
-				$template_file = WPMST()->templates->get_template_attr( array( 'template' => 'default-form' ), 'template' );
+				$template_file = WPMST()->templates->get_template_attr( array( 'template' => 'default-form-theme' ), 'template' );
 			}
 			$this->template_file = apply_filters( 'wpmtst_view_template_file_form', $template_file );
 

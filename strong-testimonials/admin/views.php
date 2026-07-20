@@ -358,6 +358,7 @@ function wpmtst_view_field_inputs( $key, $field, $adding = false, $source = 'vie
 		'wpmtst_view_field_inputs_types',
 		array(
 			'text'         => esc_html__( 'text', 'strong-testimonials' ),
+			'author'       => esc_html__( 'author (heading)', 'strong-testimonials' ),
 			'link'         => esc_html__( 'link with another field', 'strong-testimonials' ),  // the original link type
 			'link2'        => esc_html__( 'link (must be URL type)', 'strong-testimonials' ),  // @since 1.24.0
 			'date'         => esc_html__( 'date', 'strong-testimonials' ),

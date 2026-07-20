@@ -269,11 +269,11 @@
        strongController.listenForIframeReady();
      });
      
-     jQuery('textarea.max-length, input.text.max-length').on('keyup', function() {
+     jQuery('textarea.max-length, input.text.max-length, textarea.wpmtst-max-length, input.wpmtst-text.wpmtst-max-length').on('keyup', function() {
          var maxLength =  jQuery(this).attr('maxlength');
          var textLength = jQuery(this).val().length;
          if (maxLength !== null) {
-             jQuery(this).parent().find('.max-length-counter').html(textLength + ' characters out of ' + maxLength);
+             jQuery(this).parent().find('.max-length-counter, .wpmtst-max-length-counter').html(textLength + ' characters out of ' + maxLength);
          }
      });
  

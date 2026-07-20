@@ -1,0 +1,11 @@
+{
+  "name": "Default Form",
+  "description": "Inherits your theme's styles for a seamless look.",
+  "type": "form",
+  "order": 1,
+  "scripts": "",
+  "styles": "",
+  "force": "",
+  "options": [],
+  "format_version": "2.0"
+}

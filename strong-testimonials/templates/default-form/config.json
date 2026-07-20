@@ -1,8 +1,8 @@
 {
-  "name": "Default Form",
+  "name": "Classic Form",
   "description": "The default form template.",
   "type": "form",
-  "order": 1,
+  "order": 5,
   "scripts": "",
   "styles": "",
   "force": "",

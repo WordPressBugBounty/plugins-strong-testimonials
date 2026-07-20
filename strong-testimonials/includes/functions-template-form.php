@@ -128,7 +128,7 @@ function wpmtst_single_form_field( $field ) {
 			case 'category-selector':
 				$value = isset( $form_values[ $field['name'] ] ) ? (array) $form_values[ $field['name'] ] : array();
 
-				echo '<div class="field-wrap">';
+				echo '<div class="' . esc_attr( apply_filters( 'wpmtst_form_field_wrap_class', 'field-wrap' ) ) . '">';
 				printf(
 					'<select id="wpmtst_%s" name="%s" class="%s" %s tabindex="0">',
 					esc_attr( $field['name'] ),
@@ -145,7 +145,7 @@ function wpmtst_single_form_field( $field ) {
 
 			case 'category-checklist':
 				$value = isset( $form_values[ $field['name'] ] ) ? (array) $form_values[ $field['name'] ] : array();
-				echo '<div class="field-wrap">';
+				echo '<div class="' . esc_attr( apply_filters( 'wpmtst_form_field_wrap_class', 'field-wrap' ) ) . '">';
 				wpmtst_form_category_checklist_frontend( $value );
 				echo '</div>';
 				break;
@@ -155,7 +155,7 @@ function wpmtst_single_form_field( $field ) {
 				// textarea tags must be on same line for placeholder to work
 				$max_length = wpmtst_field_length( $field );
 				if ( isset( $max_length ) && ! empty( $max_length ) ) {
-					printf( '<span class="after max-length-counter" align="right">0 characters out of %s</span>', absint( $field['max_length'] ) );
+					printf( '<span class="%s" align="right">0 characters out of %s</span>', esc_attr( apply_filters( 'wpmtst_form_field_counter_class', 'after max-length-counter' ) ), absint( $field['max_length'] ) );
 				}
 				printf(
 					'<textarea id="wpmtst_%s" name="%s" class="%s" %s placeholder="%s" %s tabindex="0">%s</textarea>',
@@ -170,7 +170,7 @@ function wpmtst_single_form_field( $field ) {
 				break;
 
 			case 'file':
-				echo '<div class="field-wrap">';
+				echo '<div class="' . esc_attr( apply_filters( 'wpmtst_form_field_wrap_class', 'field-wrap' ) ) . '">';
 				echo '<input id="wpmtst_' . esc_attr( $field['name'] ) . '" type="file" name="' . esc_attr( $field['name'] ) . '"' . esc_attr( wpmtst_field_required_tag( $field ) ) . ' tabindex="0">';
 				echo '</div>';
 				break;
@@ -204,7 +204,7 @@ function wpmtst_single_form_field( $field ) {
 
 				wpmtst_field_before( $field );
 
-				echo '<div class="field-wrap">';
+				echo '<div class="' . esc_attr( apply_filters( 'wpmtst_form_field_wrap_class', 'field-wrap' ) ) . '">';
 
 				printf(
 					'<input id="wpmtst_%s" type="%s" class="%s" name="%s" %s %s tabindex="0">',
@@ -217,7 +217,7 @@ function wpmtst_single_form_field( $field ) {
 				);
 
 				if ( isset( $field['text'] ) ) {
-					echo '<label for="wpmtst_' . esc_attr( $field['name'] ) . '" class="checkbox-label">' . wp_kses_post( wpmtst_form_field_meta_l10n( $field['text'], $field, 'text' ) ) . '</label>';
+					echo '<label for="wpmtst_' . esc_attr( $field['name'] ) . '" class="' . esc_attr( apply_filters( 'wpmtst_form_field_checkbox_label_class', 'checkbox-label' ) ) . '">' . wp_kses_post( wpmtst_form_field_meta_l10n( $field['text'], $field, 'text' ) ) . '</label>';
 					if ( isset( $field['required'] ) && $field['required'] ) {
 						wpmtst_field_required_symbol();
 					}
@@ -229,7 +229,7 @@ function wpmtst_single_form_field( $field ) {
 			default: // text, email, url
 				$max_length = wpmtst_field_length( $field );
 				if ( isset( $max_length ) && ! empty( $max_length ) ) {
-					printf( '<span class="after max-length-counter" align="right">0 characters out of %s</span>', absint( $field['max_length'] ) );
+					printf( '<span class="%s" align="right">0 characters out of %s</span>', esc_attr( apply_filters( 'wpmtst_form_field_counter_class', 'after max-length-counter' ) ), absint( $field['max_length'] ) );
 				}
 				printf(
 					'<input id="wpmtst_%s" type="%s" class="%s" name="%s" %s placeholder="%s" %s %s tabindex="0">',
@@ -465,7 +465,7 @@ function wpmtst_field_required_symbol() {
 function wpmtst_field_before( $field ) {
 	$before = wpmtst_get_form_field_meta( $field, 'before' );
 	if ( $before ) {
-		echo '<span class="before">' . wp_kses_post( $before ) . '</span>';
+		echo '<span class="' . esc_attr( apply_filters( 'wpmtst_form_field_before_class', 'before' ) ) . '">' . wp_kses_post( $before ) . '</span>';
 	}
 }
 
@@ -476,7 +476,7 @@ function wpmtst_field_before( $field ) {
  */
 function wpmtst_field_after( $field ) {
 	$after = wpmtst_get_form_field_meta( $field, 'after' );
-	echo '<span class="after">' . wp_kses_post( $after ) . '</span>';
+	echo '<span class="' . esc_attr( apply_filters( 'wpmtst_form_field_after_class', 'after' ) ) . '">' . wp_kses_post( $after ) . '</span>';
 }
 
 /**
@@ -514,7 +514,7 @@ add_filter( 'wpmtst_form_field_meta', 'do_shortcode' );
 function wpmtst_field_error( $field ) {
 	$errors = WPMST()->form->get_form_errors();
 	if ( isset( $errors[ $field['name'] ] ) ) {
-		echo '<span class="error">' . esc_html( $errors[ $field['name'] ] ) . '</span>';
+		echo '<span class="' . esc_attr( apply_filters( 'wpmtst_form_field_error_class', 'error' ) ) . '">' . esc_html( $errors[ $field['name'] ] ) . '</span>';
 	}
 }
 
@@ -525,9 +525,11 @@ function wpmtst_field_error( $field ) {
  * @param bool $preview
  */
 function wpmtst_form_submit_button( $preview = false ) {
+	$class      = apply_filters( 'wpmtst_submit_button_class', 'button' );
+	$wrap_class = apply_filters( 'wpmtst_form_field_group_class', 'form-field', 'submit', 'submit' ) . ' wpmtst-submit';
 	?>
-	<div class="form-field wpmtst-submit">
-		<label><input type="<?php echo $preview ? 'button' : 'submit'; ?>" class="wpmtst_submit_testimonial" name="wpmtst_submit_testimonial" value="<?php echo esc_attr( wpmtst_get_form_message( 'form-submit-button' ) ); ?>" class="<?php echo esc_attr( apply_filters( 'wpmtst_submit_button_class', 'button' ) ); ?>" tabindex="0"></label>
+	<div class="<?php echo esc_attr( $wrap_class ); ?>">
+		<label><input type="<?php echo $preview ? 'button' : 'submit'; ?>" class="wpmtst_submit_testimonial <?php echo esc_attr( $class ); ?>" name="wpmtst_submit_testimonial" value="<?php echo esc_attr( wpmtst_get_form_message( 'form-submit-button' ) ); ?>" tabindex="0"></label>
 	</div>
 	<?php
 }
