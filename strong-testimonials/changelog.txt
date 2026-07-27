@@ -1,3 +1,7 @@
+= 3.3.4 - 27.07.2026 =
+- Fixed: Extensions REST endpoint being cached by page caching plugins, causing stale extension states.
+- Fixed: Single template content could leak into other areas of the page that also run the `the_content` filter.
+
 = 3.3.3 - 20.07.2026 =
 - Added: New default Display and Form templates that inherit the active theme's styles.
 - Fixed: Scoped global `.disabled` CSS rule.

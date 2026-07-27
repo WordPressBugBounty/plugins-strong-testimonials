@@ -687,7 +687,7 @@ function wpmtst_divi_builder_active() {
  * @return string
  */
 function wpmtst_single_template_add_content( $content ) {
-	if ( is_singular( 'wpm-testimonial' ) || is_tax( 'wpm-testimonial-category' ) ) {
+	if ( ( is_singular( 'wpm-testimonial' ) || is_tax( 'wpm-testimonial-category' ) ) && in_the_loop() && is_main_query() ) {
 		$content .= wpmtst_single_template_client();
 	}
 

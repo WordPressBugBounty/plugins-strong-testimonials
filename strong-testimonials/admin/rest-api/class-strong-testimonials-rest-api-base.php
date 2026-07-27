@@ -10,10 +10,32 @@ class Strong_Testimonials_Rest_Api_Base {
 
 	public function __construct() {
 		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
+		add_filter( 'rest_request_after_callbacks', array( $this, 'prevent_response_caching' ), 10, 3 );
 
 		Strong_Testimonials_Extensions_Base::get_instance();
 
 		$this->settings = new Strong_Testimonials_General_Settings_React();
+	}
+
+	/**
+	 * Exclude this namespace's routes from page caching plugins (stale admin state otherwise).
+	 *
+	 * @param \WP_REST_Response|\WP_Error $response Result to send to the client.
+	 * @param array                       $handler  Route handler used for the request.
+	 * @param \WP_REST_Request            $request  Request used to generate the response.
+	 *
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function prevent_response_caching( $response, $handler, $request ) {
+		if ( 0 !== strpos( $request->get_route(), '/' . $this->namespace ) ) {
+			return $response;
+		}
+
+		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+			define( 'DONOTCACHEPAGE', true );
+		}
+
+		return $response;
 	}
 
 	public function register_routes() {
