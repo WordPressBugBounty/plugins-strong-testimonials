@@ -142,13 +142,10 @@ class Strong_Testimonials_Rest_Api_Base {
 
 			$value = $this->sanitize_setting_value( $value, $sanitization_schema[ $option ], $sanitizer );
 
-			// Merge incoming array values with the existing option so that
-			// saving a partial set of fields (e.g. from one accordion subtab)
-			// does not wipe out fields managed by a different subtab.
 			if ( is_array( $value ) ) {
 				$existing = get_option( $option, array() );
 				if ( is_array( $existing ) ) {
-					$value = array_merge( $existing, $value );
+					$value = $this->deep_merge_settings( $existing, $value );
 				}
 			}
 
@@ -298,6 +295,27 @@ class Strong_Testimonials_Rest_Api_Base {
 		}
 
 		return $value;
+	}
+
+	private function deep_merge_settings( $existing, $incoming ) {
+		if ( ! is_array( $existing ) || ! is_array( $incoming ) ) {
+			return $incoming;
+		}
+
+		if ( ! $this->is_associative_array( $incoming ) ) {
+			return $incoming;
+		}
+
+		$merged = $existing;
+		foreach ( $incoming as $key => $value ) {
+			if ( isset( $merged[ $key ] ) && is_array( $merged[ $key ] ) && is_array( $value ) ) {
+				$merged[ $key ] = $this->deep_merge_settings( $merged[ $key ], $value );
+			} else {
+				$merged[ $key ] = $value;
+			}
+		}
+
+		return $merged;
 	}
 
 	/**

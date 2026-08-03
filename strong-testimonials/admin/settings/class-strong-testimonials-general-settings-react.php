@@ -943,7 +943,7 @@ class Strong_Testimonials_General_Settings_React {
 							'using' => 'default',
 							'name'  => 'testimonial',
 						),
-						'rewrite'             => $defaults['cpt']['rewrite'],
+						'rewrite'             => array_merge( array( 'on' => false ), $defaults['cpt']['rewrite'] ),
 						'has_archive'         => array(
 							'on'    => false,
 							'using' => 'current',
@@ -1126,7 +1126,7 @@ class Strong_Testimonials_General_Settings_React {
 							'on'    => false,
 							'using' => 'default',
 						),
-						'rewrite'            => $defaults['tax']['rewrite'],
+						'rewrite'            => array_merge( array( 'on' => false ), $defaults['tax']['rewrite'] ),
 					),
 				),
 				'fields'           => array(

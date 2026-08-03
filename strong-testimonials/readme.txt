@@ -4,7 +4,7 @@ Tags: testimonial plugin, testimonials slider, testimonial form, star ratings
 Requires at least: 5.2
 Requires PHP: 5.6
 Tested up to: 7.0
-Stable tag: 3.3.4
+Stable tag: 3.3.5
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -205,6 +205,10 @@ Please report security bugs found in the source code of the Strong Testimonials 
 8. View editor
 
 == Changelog ==
+= 3.3.5 - 03.08.2026 =
+- Fixed: "Enable comments for testimonials" setting not working.
+- Fixed: Saving Properties settings could reset other tabs.
+
 = 3.3.4 - 27.07.2026 =
 - Fixed: Extensions REST endpoint being cached by page caching plugins, causing stale extension states.
 - Fixed: Single template content could leak into other areas of the page that also run the `the_content` filter.
