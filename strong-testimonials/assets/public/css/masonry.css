@@ -18,8 +18,9 @@
 /*----------------------------------------------------------
  * default: 1 column
  *----------------------------------------------------------*/
-.strong-masonry .wpmtst-testimonial,
-.strong-masonry .grid-sizer {
+/* specificity required to beat template width rules, e.g. `.strong-view.wpmtst-default .wpmtst-testimonial` */
+.strong-content.strong-masonry .wpmtst-testimonial,
+.strong-content.strong-masonry .grid-sizer {
 	width: 100%;
 }
 
@@ -27,7 +28,7 @@
 	width: 0;
 }
 
-.strong-masonry .wpmtst-testimonial.grid-item--width2 {
+.strong-content.strong-masonry .wpmtst-testimonial.grid-item--width2 {
 	width: 100%;
 }
 
@@ -39,8 +40,8 @@
 	/*----------------------------------------------------------
 	 * 2 columns
 	 *----------------------------------------------------------*/
-	.strong-masonry.columns-2 .wpmtst-testimonial,
-	.strong-masonry.columns-2 .grid-sizer {
+	.strong-content.strong-masonry.columns-2 .wpmtst-testimonial,
+	.strong-content.strong-masonry.columns-2 .grid-sizer {
 		width: 48.5%;
 	}
 
@@ -48,15 +49,15 @@
 		width: 3%;
 	}
 
-	.strong-masonry.columns-2 .wpmtst-testimonial.grid-item--width2 {
+	.strong-content.strong-masonry.columns-2 .wpmtst-testimonial.grid-item--width2 {
 		width: 97%;
 	}
 
 	/*----------------------------------------------------------
 	 * 3 columns
 	 *----------------------------------------------------------*/
-	.strong-masonry.columns-3 .wpmtst-testimonial,
-	.strong-masonry.columns-3 .grid-sizer {
+	.strong-content.strong-masonry.columns-3 .wpmtst-testimonial,
+	.strong-content.strong-masonry.columns-3 .grid-sizer {
 		width: 31.33%;
 	}
 
@@ -64,15 +65,15 @@
 		width: 3%;
 	}
 
-	.strong-masonry.columns-3 .wpmtst-testimonial.grid-item--width2 {
+	.strong-content.strong-masonry.columns-3 .wpmtst-testimonial.grid-item--width2 {
 		width: 62.66%;
 	}
 
 	/*----------------------------------------------------------
 	 * 4 columns
 	 *----------------------------------------------------------*/
-	.strong-masonry.columns-4 .wpmtst-testimonial,
-	.strong-masonry.columns-4 .grid-sizer {
+	.strong-content.strong-masonry.columns-4 .wpmtst-testimonial,
+	.strong-content.strong-masonry.columns-4 .grid-sizer {
 		width: 22.75%;
 	}
 
@@ -80,7 +81,7 @@
 		width: 3%;
 	}
 
-	.strong-masonry.columns-4 .wpmtst-testimonial.grid-item--width2 {
+	.strong-content.strong-masonry.columns-4 .wpmtst-testimonial.grid-item--width2 {
 		width: 45.5%;
 	}
 }

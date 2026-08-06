@@ -451,8 +451,10 @@ class Strong_Testimonials_Admin_Scripts {
 			'wpmtst-extensions',
 			'extensionsStrings',
 			array(
-				'proExists' => defined( 'WPMTST_PRO_VERSION' ),
-				'offer'     => apply_filters( 'wpmtst_extensions_offer', new \stdClass() ),
+				'proExists'      => defined( 'WPMTST_PRO_VERSION' ),
+				'proNeedsUpdate' => defined( 'WPMTST_PRO_VERSION' ) && version_compare( WPMTST_PRO_VERSION, '1.1.0', '<' ),
+				'proAccountUrl'  => 'https://strongtestimonials.com/my-new-account/',
+				'offer'          => apply_filters( 'wpmtst_extensions_offer', new \stdClass() ),
 			),
 			'before'
 		);

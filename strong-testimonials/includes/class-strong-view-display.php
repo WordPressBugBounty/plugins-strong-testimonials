@@ -36,8 +36,6 @@ if ( ! class_exists( 'Strong_View_Display' ) ) :
 		 */
 		public function __construct( $atts = array() ) {
 			parent::__construct( $atts );
-			add_filter( 'wpmtst_build_query', array( $this, 'query_pagination' ) );
-				add_filter( 'wpmtst_build_query', array( $this, 'query_infinitescroll' ) );
 			add_action( 'wpmtst_view_processed', array( $this, 'reset_view' ) );
 		}
 
@@ -240,7 +238,14 @@ if ( ! class_exists( 'Strong_View_Display' ) ) :
 				'posts_per_page' => -1,
 				'paged'          => null,
 			);
+
+			// Scoped to this single query build so settings from other views
+			// on the same page can't leak into each other.
+			add_filter( 'wpmtst_build_query', array( $this, 'query_pagination' ) );
+			add_filter( 'wpmtst_build_query', array( $this, 'query_infinitescroll' ) );
 			$args = apply_filters( 'wpmtst_build_query', $args );
+			remove_filter( 'wpmtst_build_query', array( $this, 'query_pagination' ) );
+			remove_filter( 'wpmtst_build_query', array( $this, 'query_infinitescroll' ) );
 
 			// id's override category
 			if ( isset( $this->atts['id'] ) && $this->atts['id'] ) {

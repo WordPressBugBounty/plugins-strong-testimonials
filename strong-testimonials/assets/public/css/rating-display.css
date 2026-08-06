@@ -112,6 +112,16 @@
   display: none;
 }
 
+.strong-rating span.star:empty:before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: #FFB900;
+  -webkit-mask: url('../svg/star-solid.svg') center center no-repeat;
+  mask: url('../svg/star-solid.svg') center center no-repeat;
+}
+
 /* set the color of the star and its stroke(outline) color and width */
 .strong-rating-wrapper .star svg path {
   fill: #FFB900;
