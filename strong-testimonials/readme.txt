@@ -3,7 +3,7 @@ Contributors: wpchill,silkalns
 Tags: testimonial plugin, testimonials slider, testimonial form, star ratings
 Requires at least: 5.2
 Requires PHP: 5.6
-Tested up to: 7.0
+Tested up to: 7.1
 Stable tag: 3.3.6
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
