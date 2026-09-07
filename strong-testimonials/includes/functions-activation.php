@@ -1,11 +1,13 @@
 <?php
 
 /**
- * Add tables for Views.
+ * Create (or repair) the Views table.
  *
- * @since 1.21.0
+ * @since 3.3.7
+ *
+ * @return bool True if the table exists after this call, false otherwise.
  */
-function wpmtst_update_tables() {
+function wpmtst_create_views_table() {
 	global $wpdb;
 	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
@@ -21,10 +23,23 @@ function wpmtst_update_tables() {
 		) $charset_collate;";
 
 	$wpdb->show_errors();
-	$result = dbDelta( $sql );
+	dbDelta( $sql );
 	$wpdb->hide_errors();
 
-	if ( $wpdb->last_error ) {
+	return ! $wpdb->last_error;
+}
+
+/**
+ * Add tables for Views.
+ *
+ * @since 1.21.0
+ */
+function wpmtst_update_tables() {
+	global $wpdb;
+
+	if ( ! wpmtst_create_views_table() ) {
+		error_log( 'Strong Testimonials: could not create the views table - ' . $wpdb->last_error ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+
 		deactivate_plugins( 'strong-testimonials/strong-testimonials.php' );
 		$message  = '<p><span style="color: #CD0000;">';
 		$message .= esc_html__( 'An error occurred:', 'strong-testimonials' ) . '</span>&nbsp;';

@@ -23,25 +23,30 @@ function wpmtst_get_view_default( $unfiltered = false ) {
 /**
  * @return array|mixed|null|object
  */
-function wpmtst_get_views() { 
+function wpmtst_get_views() {
 	global $wpdb;
-	$wpdb->show_errors();
 	$table_name = $wpdb->prefix . 'strong_views';
-	$results    = $wpdb->get_results( "SELECT * FROM $table_name ORDER BY id ASC", ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-	$wpdb->hide_errors();
-	if ( $wpdb->last_error ) {
 
-		if ( ! function_exists( 'deactivate_plugins' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+	$wpdb->show_errors();
+	$results = $wpdb->get_results( "SELECT * FROM $table_name ORDER BY id ASC", ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	$wpdb->hide_errors();
+
+	if ( $wpdb->last_error ) {
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$table_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) ) === $table_name;
+
+		// The table is missing (e.g. dropped by a DB restore/cleanup) - try to recreate it instead of taking the site's testimonials down.
+		if ( ! $table_exists && wpmtst_create_views_table() ) {
+			$wpdb->show_errors();
+			$results = $wpdb->get_results( "SELECT * FROM $table_name ORDER BY id ASC", ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$wpdb->hide_errors();
 		}
 
-		deactivate_plugins( 'strong-testimonials/strong-testimonials.php' );
-		$message  = '<p><span style="color: #CD0000;">';
-		$message .= esc_html__( 'An error occurred.', 'strong-testimonials' ) . '</span>&nbsp;';
-		$message .= esc_html__( 'The plugin has been deactivated.', 'strong-testimonials' ) . '&nbsp;';
-		// translators: %s is the URL to the WordPress dashboard.
-		$message .= '<p>' . sprintf( __( '<a href="%s">Go back to Dashboard</a>', 'strong-testimonials' ), esc_url( admin_url() ) ) . '</p>';
-		wp_die( sprintf( '<div class="error strong-view-error">%s</div>', wp_kses_post( $message ) ) );
+		// Still failing (recreation failed, or a transient DB error) - log it and degrade gracefully rather than deactivating the plugin.
+		if ( $wpdb->last_error ) {
+			error_log( 'Strong Testimonials: could not read the views table - ' . $wpdb->last_error ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			return apply_filters( 'wpmtst_views_query_results', array() );
+		}
 	}
 
 	return apply_filters( 'wpmtst_views_query_results', $results );

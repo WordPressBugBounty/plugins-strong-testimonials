@@ -4,7 +4,7 @@ Tags: testimonial plugin, testimonials slider, testimonial form, star ratings
 Requires at least: 5.2
 Requires PHP: 5.6
 Tested up to: 7.1
-Stable tag: 3.3.6
+Stable tag: 3.3.7
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -22,6 +22,7 @@ https://www.youtube.com/watch?v=zIb0RQv2-pY&list=PLM2tOjfhVrZcgMyoeC_M7yUii1QJW8
 
 ## Premium features only available in Strong Testimonials - Paid version:
 
+* [Video Testimonials](https://strongtestimonials.com/kb/video-testimonials-addon/?utm_source=wordpress.org&utm_medium=link&utm_campaign=description&utm_term=video+testimonials): Add video to your testimonials and let your customers share their experience in their own words. Video testimonials are easy to add and make customer stories more engaging, personal, and authentic.
 * [Import reviews from external sources](https://strongtestimonials.com/kb/testimonial-importer/?utm_source=wordpress.org&utm_medium=link&utm_campaign=description&utm_term=Import+reviews): With our dedicated 3-rd party importer, you can now automate importing, managing, and displaying your testimonials from
 Google, Facebook, Booking, Airbnb, Yelp, Trustpilot, Capterra, and G2.
 * [Custom Testimonial Collection Form Fields](https://strongtestimonials.com/kb/custom-fields-2/?utm_source=wordpress.org&utm_medium=link&utm_campaign=description&utm_term=Custom+form+fields): Easily assign custom fields to a testimonial view if you want to add extra fields to your testimonial submission forms and optionally display this alongside testimonials on your website.
@@ -205,6 +206,9 @@ Please report security bugs found in the source code of the Strong Testimonials 
 8. View editor
 
 == Changelog ==
+= 3.3.7 - 07.09.2026 =
+- Fixed: Plugin could deactivate itself unexpectedly after a database hiccup.
+
 = 3.3.6 - 06.08.2026 =
 - Fixed: Masonry column widths could be overridden by the template's default CSS.
 - Fixed: Star rating icons could be invisible when rendered without inline SVG support.
