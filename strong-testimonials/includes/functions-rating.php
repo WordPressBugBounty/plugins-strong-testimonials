@@ -32,6 +32,21 @@ function wpmtst_star_rating_form( $field, $value, $wrapper_class, $should_echo =
 						<path class="star_solid" d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"></path>
 					</svg>';
 	$random       = wp_rand( 1, 9999 );
+
+	if ( $field && is_array( $field ) && ! empty( $field['label'] ) ) {
+		$legend_text = wp_strip_all_tags( wpmtst_form_field_meta_l10n( $field['label'], $field, 'label' ) );
+	} else {
+		$legend_text = __( 'Rating', 'strong-testimonials' );
+	}
+
+	$star_labels = array(
+		0 => __( 'No stars', 'strong-testimonials' ),
+		1 => __( '1 star', 'strong-testimonials' ),
+		2 => __( '2 stars', 'strong-testimonials' ),
+		3 => __( '3 stars', 'strong-testimonials' ),
+		4 => __( '4 stars', 'strong-testimonials' ),
+		5 => __( '5 stars', 'strong-testimonials' ),
+	);
 	$svg_args     = array(
 		'svg'   => array(
 			'class'           => true,
@@ -59,27 +74,26 @@ function wpmtst_star_rating_form( $field, $value, $wrapper_class, $should_echo =
 					id="wpmtst_<?php echo esc_attr( $field['name'] ); ?>"
 					name="<?php echo esc_attr( $field['name'] ); ?>"
 					class="strong-rating"
-					data-field-type="rating"
-					tabindex="0">
-						<legend><?php esc_html_e( 'rating fields', 'strong-testimonials' ); ?></legend><!--
+					data-field-type="rating">
+						<legend><?php echo esc_html( $legend_text ); ?></legend><!--
 
-			--><input type="radio" id="<?php echo esc_attr( $field['name'] ); ?>-star0-<?php echo absint( $random ); ?>" name="<?php echo esc_attr( $name ); ?>" value="0" <?php checked( $value, 0 ); ?> /><!--
-			--><label for="<?php echo esc_attr( $field['name'] ); ?>-star0-<?php echo absint( $random ); ?>" title="No stars"></label><!--
+			--><input type="radio" id="<?php echo esc_attr( $field['name'] ); ?>-star0-<?php echo absint( $random ); ?>" name="<?php echo esc_attr( $name ); ?>" value="0" aria-label="<?php echo esc_attr( $star_labels[0] ); ?>" aria-hidden="true" tabindex="-1" <?php checked( $value, 0 ); ?> /><!--
+			--><label for="<?php echo esc_attr( $field['name'] ); ?>-star0-<?php echo absint( $random ); ?>" title="<?php echo esc_attr( $star_labels[0] ); ?>"></label><!--
 
-			--><input type="radio" id="<?php echo esc_attr( $field['name'] ); ?>-star1-<?php echo absint( $random ); ?>" name="<?php echo esc_attr( $name ); ?>" value="1" <?php checked( $value, 1 ); ?> /><!--
-			--><label for="<?php echo esc_attr( $field['name'] ); ?>-star1-<?php echo absint( $random ); ?>" class="star" title="1 star"><?php echo wp_kses( $star_regular, $svg_args ); ?></label><!--
+			--><input type="radio" id="<?php echo esc_attr( $field['name'] ); ?>-star1-<?php echo absint( $random ); ?>" name="<?php echo esc_attr( $name ); ?>" value="1" aria-label="<?php echo esc_attr( $star_labels[1] ); ?>" <?php checked( $value, 1 ); ?> /><!--
+			--><label for="<?php echo esc_attr( $field['name'] ); ?>-star1-<?php echo absint( $random ); ?>" class="star" title="<?php echo esc_attr( $star_labels[1] ); ?>"><?php echo wp_kses( $star_regular, $svg_args ); ?></label><!--
 
-			--><input type="radio" id="<?php echo esc_attr( $field['name'] ); ?>-star2-<?php echo absint( $random ); ?>" name="<?php echo esc_attr( $name ); ?>" value="2" <?php checked( $value, 2 ); ?> /><!--
-			--><label for="<?php echo esc_attr( $field['name'] ); ?>-star2-<?php echo absint( $random ); ?>" class="star" title="2 stars"><?php echo wp_kses( $star_regular, $svg_args ); ?></label><!--
+			--><input type="radio" id="<?php echo esc_attr( $field['name'] ); ?>-star2-<?php echo absint( $random ); ?>" name="<?php echo esc_attr( $name ); ?>" value="2" aria-label="<?php echo esc_attr( $star_labels[2] ); ?>" <?php checked( $value, 2 ); ?> /><!--
+			--><label for="<?php echo esc_attr( $field['name'] ); ?>-star2-<?php echo absint( $random ); ?>" class="star" title="<?php echo esc_attr( $star_labels[2] ); ?>"><?php echo wp_kses( $star_regular, $svg_args ); ?></label><!--
 
-			--><input type="radio" id="<?php echo esc_attr( $field['name'] ); ?>-star3-<?php echo absint( $random ); ?>" name="<?php echo esc_attr( $name ); ?>" value="3" <?php checked( $value, 3 ); ?> /><!--
-			--><label for="<?php echo esc_attr( $field['name'] ); ?>-star3-<?php echo absint( $random ); ?>" class="star" title="3 stars"><?php echo wp_kses( $star_regular, $svg_args ); ?></label><!--
+			--><input type="radio" id="<?php echo esc_attr( $field['name'] ); ?>-star3-<?php echo absint( $random ); ?>" name="<?php echo esc_attr( $name ); ?>" value="3" aria-label="<?php echo esc_attr( $star_labels[3] ); ?>" <?php checked( $value, 3 ); ?> /><!--
+			--><label for="<?php echo esc_attr( $field['name'] ); ?>-star3-<?php echo absint( $random ); ?>" class="star" title="<?php echo esc_attr( $star_labels[3] ); ?>"><?php echo wp_kses( $star_regular, $svg_args ); ?></label><!--
 
-			--><input type="radio" id="<?php echo esc_attr( $field['name'] ); ?>-star4-<?php echo absint( $random ); ?>" name="<?php echo esc_attr( $name ); ?>" value="4" <?php checked( $value, 4 ); ?> /><!--
-			--><label for="<?php echo esc_attr( $field['name'] ); ?>-star4-<?php echo absint( $random ); ?>" class="star" title="4 stars"><?php echo wp_kses( $star_regular, $svg_args ); ?></label><!--
+			--><input type="radio" id="<?php echo esc_attr( $field['name'] ); ?>-star4-<?php echo absint( $random ); ?>" name="<?php echo esc_attr( $name ); ?>" value="4" aria-label="<?php echo esc_attr( $star_labels[4] ); ?>" <?php checked( $value, 4 ); ?> /><!--
+			--><label for="<?php echo esc_attr( $field['name'] ); ?>-star4-<?php echo absint( $random ); ?>" class="star" title="<?php echo esc_attr( $star_labels[4] ); ?>"><?php echo wp_kses( $star_regular, $svg_args ); ?></label><!--
 
-			--><input type="radio" id="<?php echo esc_attr( $field['name'] ); ?>-star5-<?php echo absint( $random ); ?>" name="<?php echo esc_attr( $name ); ?>" value="5" <?php checked( $value, 5 ); ?> /><!--
-			--><label for="<?php echo esc_attr( $field['name'] ); ?>-star5-<?php echo absint( $random ); ?>" class="star" title="5 stars"><?php echo wp_kses( $star_regular, $svg_args ); ?></label><!--
+			--><input type="radio" id="<?php echo esc_attr( $field['name'] ); ?>-star5-<?php echo absint( $random ); ?>" name="<?php echo esc_attr( $name ); ?>" value="5" aria-label="<?php echo esc_attr( $star_labels[5] ); ?>" <?php checked( $value, 5 ); ?> /><!--
+			--><label for="<?php echo esc_attr( $field['name'] ); ?>-star5-<?php echo absint( $random ); ?>" class="star" title="<?php echo esc_attr( $star_labels[5] ); ?>"><?php echo wp_kses( $star_regular, $svg_args ); ?></label><!--
 
 		--></fieldset><!--
 	--></div>

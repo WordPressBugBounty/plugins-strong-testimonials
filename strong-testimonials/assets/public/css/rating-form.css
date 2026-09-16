@@ -25,9 +25,22 @@
   outline: 1px solid #CCC;
 }
 
-/* the stars */
 .strong-rating input[type=radio] {
-  display: none !important;
+  position: absolute !important;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  word-wrap: normal !important;
+}
+
+.strong-rating input[type=radio]:focus + label {
+  outline: 2px solid #005fcc;
+  outline-offset: 2px;
 }
 
 .strong-rating label {
