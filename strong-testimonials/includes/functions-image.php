@@ -65,9 +65,10 @@ function wpmtst_thumbnail_img( $img, $post_id, $size ) {
 	if ( WPMST()->atts( 'lightbox' ) ) {
 		$url = wp_get_attachment_url( get_post_thumbnail_id( $post_id ) );
 		if ( $url ) {
-			$class_array = array( WPMST()->atts( 'lightbox_class' ) );
-			$classes     = implode( ' ', array_unique( apply_filters( 'wpmtst_thumbnail_link_class', $class_array ) ) );
-			$img         = sprintf( '<a class="%s" href="%s">%s</a>', $classes, esc_url( $url ), $img );
+			$lightbox_class = array_map( 'sanitize_html_class', explode( ' ', (string) WPMST()->atts( 'lightbox_class' ) ) );
+			$class_array    = array( implode( ' ', array_filter( $lightbox_class ) ) );
+			$classes        = implode( ' ', array_unique( apply_filters( 'wpmtst_thumbnail_link_class', $class_array ) ) );
+			$img            = sprintf( '<a class="%s" href="%s">%s</a>', esc_attr( $classes ), esc_url( $url ), $img );
 		}
 	}
 	return $img;
