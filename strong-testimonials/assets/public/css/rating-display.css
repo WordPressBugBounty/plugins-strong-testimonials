@@ -34,7 +34,8 @@
   font-weight: 700;
 }
 
-.strong-rating-wrapper legend {
+.strong-rating-wrapper legend,
+.strong-rating-wrapper .strong-rating-text {
   clip: rect(1px, 1px, 1px, 1px);
   height: 1px;
   overflow: hidden;

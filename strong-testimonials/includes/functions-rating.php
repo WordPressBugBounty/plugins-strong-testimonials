@@ -146,10 +146,13 @@ function wpmtst_star_rating_display( $value = 0, $wrapper_class = 'in-view', $sh
 		),
 	);
 
+	$sr_text = ( $value > 0 ) ? sprintf( __( 'Rated %d out of 5 stars', 'strong-testimonials' ), $value ) : __( 'Not rated', 'strong-testimonials' );
+
 	ob_start();
 	?>
 	<span class="strong-rating-wrapper <?php echo esc_attr( $wrapper_class ); ?>">
-		<span class="strong-rating"><!-- cheap trick to collapse whitespace around inline-blocks
+		<span class="strong-rating-text"><?php echo esc_html( $sr_text ); ?></span><!--
+		--><span class="strong-rating" aria-hidden="true"><!-- cheap trick to collapse whitespace around inline-blocks
 			--><span class="star" style="display: none;"></span><!--
 			--><span class="star" style="display: inline-block;"><?php echo ( 1 <= $value ) ? wp_kses( $star_solid, $svg_args ) : wp_kses( $star_regular, $svg_args ); ?></span><!--
 			--><span class="star" style="display: inline-block;"><?php echo ( 2 <= $value ) ? wp_kses( $star_solid, $svg_args ) : wp_kses( $star_regular, $svg_args ); ?></span><!--

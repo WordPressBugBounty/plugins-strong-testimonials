@@ -1,3 +1,6 @@
+= 3.3.10 - 18.09.2026 =
+- Fixed: Displayed star ratings had no text alternative for screen readers.
+
 = 3.3.9 - 17.09.2026 =
 - Fixed: Security issue.
 
