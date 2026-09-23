@@ -33,8 +33,9 @@ function wpmtst_form_info() {
 	);
 
 	$args = array(
-		'scroll' => $scroll,
-		'fields' => $fields,
+		'scroll'   => $scroll,
+		'fields'   => $fields,
+		'nonceUrl' => admin_url( 'admin-ajax.php' ),
 	);
 
 	if ( WPMST()->atts( 'form_ajax' ) ) {
@@ -172,7 +173,7 @@ function wpmtst_single_form_field( $field ) {
 
 			case 'file':
 				echo '<div class="' . esc_attr( apply_filters( 'wpmtst_form_field_wrap_class', 'field-wrap' ) ) . '">';
-				echo '<input id="wpmtst_' . esc_attr( $field['name'] ) . '" type="file" name="' . esc_attr( $field['name'] ) . '"' . esc_attr( wpmtst_field_required_tag( $field ) ) . ' tabindex="0">';
+				echo '<input id="wpmtst_' . esc_attr( $field['name'] ) . '" type="file" name="' . esc_attr( $field['name'] ) . '" accept="image/*"' . esc_attr( wpmtst_field_required_tag( $field ) ) . ' tabindex="0">';
 				echo '</div>';
 				break;
 
@@ -518,6 +519,17 @@ function wpmtst_field_error( $field ) {
 		echo '<span class="' . esc_attr( apply_filters( 'wpmtst_form_field_error_class', 'error' ) ) . '">' . esc_html( $errors[ $field['name'] ] ) . '</span>';
 	}
 }
+
+/**
+ * Print a form-level error not tied to a specific field (e.g. expired nonce, failed post insert).
+ */
+function wpmtst_form_general_error() {
+	$errors = WPMST()->form->get_form_errors();
+	if ( isset( $errors['post'] ) ) {
+		echo '<span class="' . esc_attr( apply_filters( 'wpmtst_form_field_error_class', 'error' ) ) . '">' . esc_html( $errors['post'] ) . '</span>';
+	}
+}
+add_action( 'wpmtst_form_before_fields', 'wpmtst_form_general_error' );
 
 
 /**

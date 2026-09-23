@@ -113,7 +113,8 @@ class Strong_Testimonials_Admin {
 		$header_asset      = file_exists( $header_asset_file )
 			? require $header_asset_file
 			: array(
-				'version' => $plugin_version,
+				'dependencies' => array(),
+				'version'      => $plugin_version,
 			);
 
 		wp_register_script(

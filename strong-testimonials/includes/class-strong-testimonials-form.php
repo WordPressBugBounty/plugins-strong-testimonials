@@ -30,6 +30,23 @@ class Strong_Testimonials_Form {
 		add_filter( 'wpmtst_form_callbacks', array( $this, 'register_fields_page' ) );
 		add_action( 'wp_ajax_wpmtst_form2', array( $this, 'process_form_ajax' ) );
 		add_action( 'wp_ajax_nopriv_wpmtst_form2', array( $this, 'process_form_ajax' ) );
+		add_action( 'wp_ajax_wpmtst_form_nonce', array( $this, 'send_form_nonce' ) );
+		add_action( 'wp_ajax_nopriv_wpmtst_form_nonce', array( $this, 'send_form_nonce' ) );
+	}
+
+	/**
+	 * Return a fresh form nonce for pages served from a cache.
+	 *
+	 * @since 3.3.11
+	 */
+	public function send_form_nonce() {
+		nocache_headers();
+		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+			define( 'DONOTCACHEPAGE', true );
+		}
+		header( 'X-LiteSpeed-Cache-Control: no-cache' );
+
+		wp_send_json_success( array( 'nonce' => wp_create_nonce( 'wpmtst_form_action' ) ) );
 	}
 
 		/**
@@ -166,7 +183,13 @@ class Strong_Testimonials_Form {
 	 */
 	public function form_processor() {
 
+		$form_options = get_option( 'wpmtst_form_options' );
+
 		if ( empty( $_POST ) || ! wp_verify_nonce( $_POST['wpmtst_form_nonce'], 'wpmtst_form_action' ) ) {
+			$session_expired_message = isset( $form_options['messages']['session-expired']['text'] )
+				? $form_options['messages']['session-expired']['text']
+				: esc_html_x( 'This page was open for a while and your session expired. Please reload the page and submit again.', 'error message', 'strong-testimonials' );
+			$this->set_form_errors( array( 'post' => $session_expired_message ) );
 			return false;
 		}
 
@@ -184,8 +207,6 @@ class Strong_Testimonials_Form {
 		$new_post = wpmtst_trim_array( $new_post );
 
 		add_filter( 'upload_mimes', array( $this, 'restrict_mime' ) );
-
-		$form_options = get_option( 'wpmtst_form_options' );
 
 		// Init four arrays: post, post_meta, categories, attachment(s).
 		$testimonial_post = array(

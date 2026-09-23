@@ -432,8 +432,15 @@ class Strong_Testimonials_Defaults {
 				/* translators: Default message for submission form error. */
 				'text'        => esc_html_x( 'There was a problem processing your testimonial.', 'error message', 'strong-testimonials' ),
 			),
-			'submission-success' => array(
+			'session-expired'    => array(
 				'order'       => 4,
+				/* translators: Settings > Form > Messages tab */
+				'description' => esc_html_x( 'Session Expired', 'description', 'strong-testimonials' ),
+				/* translators: Default message shown when the form nonce has expired or is invalid. */
+				'text'        => esc_html_x( 'This page was open for a while and your session expired. Please reload the page and submit again.', 'error message', 'strong-testimonials' ),
+			),
+			'submission-success' => array(
+				'order'       => 5,
 				/* translators: Settings > Form > Messages tab */
 				'description' => esc_html_x( 'Submission Success', 'description', 'strong-testimonials' ),
 				/* translators: Default message for submission form success message. */

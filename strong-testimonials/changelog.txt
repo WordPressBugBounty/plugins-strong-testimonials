@@ -1,3 +1,8 @@
+= 3.3.11 - 23.09.2026 =
+- Fixed: Submissions could fail silently and lose the visitor's input when the security check went stale (e.g. under page caching).
+- Fixed: Photo upload field now only accepts image files.
+- Added: JS event fired before a testimonial is submitted.
+
 = 3.3.10 - 18.09.2026 =
 - Fixed: Displayed star ratings had no text alternative for screen readers.
 

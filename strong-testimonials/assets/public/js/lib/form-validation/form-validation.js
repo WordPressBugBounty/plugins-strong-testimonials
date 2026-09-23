@@ -10,6 +10,7 @@ class strongValidation {
 
 		this.defaults = {
 			ajaxUrl: '',
+			nonceUrl: '',
 			display: {
 				successMessage: false
 			},
@@ -58,6 +59,14 @@ class strongValidation {
 
 		this.setOpts(strongForm);
 
+		this.refreshNonce();
+		var instance = this;
+		window.addEventListener('pageshow', function (e) {
+			if (e.persisted) {
+				instance.refreshNonce();
+			}
+		});
+
 		if (this.settings.display.successMessage) {
 
 			this.scrollOnSuccess();
@@ -71,6 +80,22 @@ class strongValidation {
 
 		}
 
+	}
+
+	/**
+	 * Refresh the form nonce (POST, so caching layers don't store it).
+	 */
+	refreshNonce() {
+		var instance = this;
+		if (!this.settings.nonceUrl || this.form.data('wpmtstNonceRefreshed')) {
+			return;
+		}
+		this.form.data('wpmtstNonceRefreshed', true);
+		jQuery.post(this.settings.nonceUrl, {action: 'wpmtst_form_nonce'}, function (response) {
+			if (response && response.success && response.data && response.data.nonce) {
+				instance.form.find('input[name="wpmtst_form_nonce"]').val(response.data.nonce);
+			}
+		});
 	}
 
 	changeEvents() {
@@ -176,6 +201,9 @@ class strongValidation {
 				},
 
 				submitHandler: function () {
+					// Custom event: native form.submit() below bypasses jQuery's 'submit'.
+					instance.form.trigger('wpmtst_before_submit', [instance.formID]);
+
 					instance.disableForm();
 					// If Ajax
 					if (instance.settings.ajaxUrl !== '') {
@@ -249,13 +277,20 @@ class strongValidation {
 			this.form.parent().html(obj.message);
 			this.scrollOnSuccess();
 		} else {
+			this.form.children('.wpmtst-general-error').remove();
+
 			for (var key in obj.errors) {
 				if (obj.errors.hasOwnProperty(key)) {
-					this.form.children('.field-' + key + ', .wpmtst-field-' + key)
-						.find('span.error, span.wpmtst-error')
-						.remove()
-						.end()
-						.append('<span class="error wpmtst-error">' + obj.errors[key] + '</span>');
+					var fieldContainer = this.form.children('.field-' + key + ', .wpmtst-field-' + key);
+					if (fieldContainer.length) {
+						fieldContainer
+							.find('span.error, span.wpmtst-error')
+							.remove()
+							.end()
+							.append('<span class="error wpmtst-error">' + obj.errors[key] + '</span>');
+					} else {
+						this.form.prepend('<span class="error wpmtst-error wpmtst-general-error">' + obj.errors[key] + '</span>');
+					}
 				}
 			}
 		}
