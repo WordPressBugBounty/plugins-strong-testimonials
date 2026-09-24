@@ -33,8 +33,17 @@ function wpmtst_update_custom_fields() {
 	}
 
 	$form_id       = absint( $_POST['form_id'] );
-	$forms         = get_option( 'wpmtst_custom_forms' );
+	$forms         = get_option( 'wpmtst_custom_forms', array() );
 	$field_options = apply_filters( 'wpmtst_fields', get_option( 'wpmtst_fields' ) );
+
+	if ( ! is_array( $forms ) ) {
+		$forms = array();
+	}
+
+	if ( ! isset( $forms[ $form_id ] ) ) {
+		$default_forms     = Strong_Testimonials_Defaults::get_custom_forms();
+		$forms[ $form_id ] = isset( $default_forms[ $form_id ] ) ? $default_forms[ $form_id ] : $default_forms[1];
+	}
 
 	$notice = array(
 		'status' => 'success',
@@ -162,7 +171,16 @@ function wpmtst_settings_custom_fields( $form_id = 1 ) {
 		return;
 	}
 
-	$forms  = get_option( 'wpmtst_custom_forms' );
+	$forms = get_option( 'wpmtst_custom_forms' );
+	if ( ! $forms ) {
+		$forms = Strong_Testimonials_Defaults::get_custom_forms();
+	}
+
+	// Form 1 can be missing if it was deleted with the Multiple Forms extension.
+	if ( ! isset( $forms[ $form_id ] ) ) {
+		$forms[ $form_id ] = isset( $forms[1] ) ? $forms[1] : reset( $forms );
+	}
+
 	$fields = apply_filters( 'wpmtst_form_fields', $forms[ $form_id ]['fields'] );
 
 	ob_start();

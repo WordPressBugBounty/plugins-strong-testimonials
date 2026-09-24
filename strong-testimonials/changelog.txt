@@ -1,3 +1,7 @@
+= 3.3.12 - 24.09.2026 =
+- Fixed: Security issue.
+- Fixed: Form fields editor was empty and showed PHP warnings when the form with ID 1 was missing.
+
 = 3.3.11 - 23.09.2026 =
 - Fixed: Submissions could fail silently and lose the visitor's input when the security check went stale (e.g. under page caching).
 - Fixed: Photo upload field now only accepts image files.
