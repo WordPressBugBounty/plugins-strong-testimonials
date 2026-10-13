@@ -512,6 +512,17 @@ function wpmtst_form_field_meta_l10n( $field_meta, $field, $meta ) {
 add_filter( 'wpmtst_form_field_meta', 'wpmtst_form_field_meta_l10n', 10, 3 );
 add_filter( 'wpmtst_form_field_meta', 'do_shortcode' );
 
+/**
+ * Notice shown in the form preview in place of an unsaved shortcode.
+ *
+ * @return string
+ */
+function wpmtst_form_field_shortcode_notice() {
+	return '<span class="wpmtst-shortcode-preview-notice" style="display:block"><em>'
+		. esc_html__( 'Save to preview the shortcode output.', 'strong-testimonials' )
+		. '</em></span>';
+}
+
 
 function wpmtst_field_error( $field ) {
 	$errors = WPMST()->form->get_form_errors();

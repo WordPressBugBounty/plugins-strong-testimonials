@@ -4,7 +4,7 @@ Tags: testimonial plugin, testimonials slider, testimonial form, star ratings
 Requires at least: 5.2
 Requires PHP: 5.6
 Tested up to: 7.1
-Stable tag: 3.3.12
+Stable tag: 3.3.13
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -206,6 +206,9 @@ Please report security bugs found in the source code of the Strong Testimonials 
 8. View editor
 
 == Changelog ==
+= 3.3.13 - 08.10.2026 =
+- Fixed: Security issue.
+
 = 3.3.12 - 24.09.2026 =
 - Fixed: Security issue.
 - Fixed: Form fields editor was empty and showed PHP warnings when the form with ID 1 was missing.

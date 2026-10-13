@@ -157,7 +157,7 @@ class Strong_Testimonials_Admin_Scripts {
 		);
 
 		$params = array(
-			'ajax_nonce' => wp_create_nonce( 'wpmtst-admin' ),
+			'ajax_nonce' => current_user_can( 'manage_options' ) ? wp_create_nonce( 'wpmtst-admin' ) : '',
 			'newField'   => esc_html_x( 'New Field', 'Field editor: The default label for new fields', 'strong-testimonials' ),
 			'inUse'      => esc_html_x( '(in use)', 'Fields editor: To indicate when a field type can only be used once.', 'strong-testimonials' ),
 			'noneFound'  => esc_html_x( '(none found)', 'Fields editor: To indicate when no categories have been found.', 'strong-testimonials' ),
@@ -335,7 +335,7 @@ class Strong_Testimonials_Admin_Scripts {
 			'wpmtst-admin-global',
 			'wpmtst_admin',
 			array(
-				'nonce'              => wp_create_nonce( 'wpmtst-admin' ),
+				'nonce'              => current_user_can( 'manage_options' ) ? wp_create_nonce( 'wpmtst-admin' ) : '',
 				'templateTagTitle'   => esc_html__( 'click to insert into message at caret', 'strong-testimonials' ),
 				'something_wrong'    => esc_html__( 'Something went wrong. Please try again.', 'strong-testimonials' ),
 				'email_license_sent' => esc_html__( 'An email containing the license was sent.', 'strong-testimonials' ),

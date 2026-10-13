@@ -134,7 +134,13 @@ class Strong_Testimonials_Settings_Form {
 		}
 		$input['recipients'] = $new_recipients;
 
-		$input['default_recipient'] = maybe_unserialize( $input['default_recipient'] );
+		if ( is_string( $input['default_recipient'] ) ) {
+			// Never instantiate objects from this value (prevents PHP object injection).
+			$input['default_recipient'] = unserialize( $input['default_recipient'], array( 'allowed_classes' => false ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+		}
+		if ( ! is_array( $input['default_recipient'] ) ) {
+			$input['default_recipient'] = array();
+		}
 		$input['email_subject']     = isset( $input['email_subject'] ) ? wp_kses_post( trim( $input['email_subject'] ) ) : '';
 		$input['email_message']     = isset( $input['email_message'] ) ? wp_kses_post( rtrim( $input['email_message'] ) ) : '';
 
@@ -213,6 +219,9 @@ class Strong_Testimonials_Settings_Form {
 	 * @since 1.13
 	 */
 	public static function restore_default_messages_function() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( -1, 403 );
+		}
 		$default_form_options = Strong_Testimonials_Defaults::get_form_options();
 		$messages             = $default_form_options['messages'];
 		echo json_encode( $messages );
@@ -225,6 +234,9 @@ class Strong_Testimonials_Settings_Form {
 	 * @since 1.13
 	 */
 	public static function restore_default_message_function() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( -1, 403 );
+		}
 		$input                = isset( $_REQUEST['field'] ) ? str_replace( '_', '-', sanitize_text_field( wp_unslash( $_REQUEST['field'] ) ) ) : '';
 		$default_form_options = Strong_Testimonials_Defaults::get_form_options();
 		$message              = $default_form_options['messages'][ $input ];

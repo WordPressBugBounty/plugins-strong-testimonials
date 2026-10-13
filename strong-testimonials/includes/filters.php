@@ -56,9 +56,17 @@ function wpmtst_content_filters() {
 }
 add_action( 'init', 'wpmtst_content_filters' );
 
-function wpmtst_add_allowed_tags( $tags ) {
+function wpmtst_add_allowed_tags( $tags, $context = '' ) {
 
-	// iframe
+	// These extra tags are allowed only in the plugin's own trusted rendering
+	// context, never in the core contexts (post, comment, ...) that also
+	// sanitise user-submitted content. Form controls and data-* are omitted on
+	// purpose: the plugin prints its own forms directly (not through kses), and
+	// allowing them here is what enabled form-injection and Interactivity XSS.
+	if ( 'strong_testimonials' !== $context ) {
+		return $tags;
+	}
+
 	$tags['iframe'] = array(
 		'src'             => true,
 		'height'          => true,
@@ -66,70 +74,9 @@ function wpmtst_add_allowed_tags( $tags ) {
 		'frameborder'     => true,
 		'allowfullscreen' => true,
 		'style'           => true,
-		'data-*'          => true,
 		'hidden'          => true,
 	);
-	// form fields - input
-	$tags['input'] = array(
-		'class'       => true,
-		'id'          => true,
-		'name'        => true,
-		'value'       => true,
-		'type'        => true,
-		'placeholder' => true,
-		'required'    => true,
-		'checked'     => true,
-		'title'       => true,
-		'style'       => true,
-		'data-*'      => true,
-		'hidden'      => true,
-	);
-	// textarea
-	$tags['textarea'] = array(
-		'class'       => true,
-		'id'          => true,
-		'name'        => true,
-		'value'       => true,
-		'type'        => true,
-		'placeholder' => true,
-		'required'    => true,
-		'style'       => true,
-		'data-*'      => true,
-		'hidden'      => true,
-	);
-	// select
-	$tags['select'] = array(
-		'class'  => true,
-		'id'     => true,
-		'name'   => true,
-		'value'  => true,
-		'type'   => true,
-		'style'  => true,
-		'data-*' => true,
-		'hidden' => true,
-	);
-	// select options
-	$tags['option']   = array(
-		'selected' => true,
-		'class'    => true,
-		'id'       => true,
-		'name'     => true,
-		'value'    => true,
-		'style'    => true,
-		'data-*'   => true,
-		'hidden'   => true,
-	);
-	$tags['optgroup'] = array(
-		'class'  => true,
-		'id'     => true,
-		'name'   => true,
-		'value'  => true,
-		'label'  => true,
-		'style'  => true,
-		'data-*' => true,
-		'hidden' => true,
-	);
-	$tags['source']   = array(
+	$tags['source'] = array(
 		'type' => true,
 		'src'  => true,
 	);
@@ -139,8 +86,6 @@ function wpmtst_add_allowed_tags( $tags ) {
 	$tags['img']['srcset'] = true;
 	$tags['img']['sizes']  = true;
 
-	$tags['div']['data-*'] = true;
-
 	$tags['noscript'] = array();
 
 	$tags['style'] = array(
@@ -149,7 +94,7 @@ function wpmtst_add_allowed_tags( $tags ) {
 
 	return $tags;
 }
-add_filter( 'wp_kses_allowed_html', 'wpmtst_add_allowed_tags' );
+add_filter( 'wp_kses_allowed_html', 'wpmtst_add_allowed_tags', 10, 2 );
 
 
 function wpmtst_safe_style_css( $styles ) {

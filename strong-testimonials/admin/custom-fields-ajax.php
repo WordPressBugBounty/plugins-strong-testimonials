@@ -86,7 +86,7 @@ add_action( 'wp_ajax_wpmtst_add_field_3', 'wpmtst_add_field_3_function' );
 function wpmtst_add_field_4_function() {
 
 	if ( ! current_user_can( 'manage_options' ) ) {
-		add_filter( 'show_admin_bar', '__return_false' );
+		wp_die();
 	}
 
 	check_ajax_referer( 'wpmtst-admin', 'security' );

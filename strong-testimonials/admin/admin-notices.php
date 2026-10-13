@@ -15,6 +15,11 @@ function wpmtst_dismiss_notice_ajax() {
 	}
 
 	check_ajax_referer( 'wpmtst-admin', 'nonce' );
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_die( -1, 403 );
+	}
+
 	wpmtst_delete_admin_notice( sanitize_text_field( wp_unslash( $_POST['key'] ) ) );
 	wp_die();
 }

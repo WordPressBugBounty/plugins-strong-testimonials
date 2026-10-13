@@ -8,11 +8,36 @@ function wpmtst_get_form_preview() {
 
 	check_ajax_referer( 'wpmtst-admin', 'security' );
 
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_die( -1, 403 );
+	}
+
 	// parse_str decodes too; no need to use urldecode
 	parse_str( stripslashes_deep( $_POST['fields'] ), $preview );
 
 	$new_fields = array();
 	$fields     = apply_filters( 'wpmtst_fields', get_option( 'wpmtst_fields' ) );
+
+	$saved_shortcodes = array();
+	$saved_forms      = get_option( 'wpmtst_custom_forms' );
+	if ( is_array( $saved_forms ) ) {
+		foreach ( $saved_forms as $saved_form ) {
+			if ( empty( $saved_form['fields'] ) || ! is_array( $saved_form['fields'] ) ) {
+				continue;
+			}
+			foreach ( $saved_form['fields'] as $saved_field ) {
+				if ( ! isset( $saved_field['name'] ) ) {
+					continue;
+				}
+				foreach ( array( 'shortcode_on_form', 'before', 'after' ) as $saved_key ) {
+					if ( ! empty( $saved_field[ $saved_key ] ) ) {
+						$saved_shortcodes[ $saved_field['name'] . '|' . $saved_key . '|' . sanitize_text_field( $saved_field[ $saved_key ] ) ] = true;
+					}
+				}
+			}
+		}
+	}
+	$shortcode_regex = get_shortcode_regex();
 
 	foreach ( $preview['fields'] as $key => $field ) {
 		/*
@@ -24,6 +49,9 @@ function wpmtst_get_form_preview() {
 		$field['required']   = isset( $field['required'] ) ? 1 : 0;
 
 		$field = array_merge( $fields['field_base'], $field );
+
+		$field = array_intersect_key( $field, $fields['field_base'] );
+		$field['action_input'] = '';
 
 		if ( 'none' === $field['input_type'] ) {
 			$field['input_type'] = 'text';
@@ -40,6 +68,17 @@ function wpmtst_get_form_preview() {
 		$field['placeholder'] = sanitize_text_field( $field['placeholder'] );
 		$field['before']      = sanitize_text_field( $field['before'] );
 		$field['after']       = sanitize_text_field( $field['after'] );
+
+		foreach ( array( 'shortcode_on_form', 'before', 'after' ) as $exec_key ) {
+			$request_val = isset( $field[ $exec_key ] ) ? $field[ $exec_key ] : '';
+			if ( '' === $request_val || ! preg_match( '/' . $shortcode_regex . '/', $request_val ) ) {
+				continue;
+			}
+			$lookup = $field['name'] . '|' . $exec_key . '|' . sanitize_text_field( $request_val );
+			if ( ! isset( $saved_shortcodes[ $lookup ] ) ) {
+				$field[ $exec_key ] = wpmtst_form_field_shortcode_notice();
+			}
+		}
 
 		// add to fields array in display order
 		$new_fields[] = $field;

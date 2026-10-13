@@ -171,7 +171,7 @@ class Strong_Testimonials_Admin_List {
 				break;
 
 			case 'post_excerpt':
-				echo wp_kses_post( $post->post_excerpt );
+				echo esc_html( $post->post_excerpt );
 				break;
 
 			case 'strong_thumbnail':
@@ -233,7 +233,7 @@ class Strong_Testimonials_Admin_List {
 								echo $custom[ $column ][0] ? 'yes' : 'no';
 								break;
 							default:
-								echo wp_kses_post( $custom[ $column ][0] );
+								echo esc_html( $custom[ $column ][0] );
 						}
 					}
 				} elseif ( isset( $fields[ $column ] ) ) {
