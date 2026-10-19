@@ -294,7 +294,7 @@ function wpmtst_show_field( $key, $field, $adding ) {
 
 		<?php
 		if ( ! $adding ) {
-			echo wp_kses_post( wpmtst_show_field_hidden( $key, $field ) );
+			echo wp_kses( wpmtst_show_field_hidden( $key, $field ), 'strong_testimonials' );
 		}
 		include 'partials/fields/field-controls.php';
 		?>
@@ -538,7 +538,7 @@ function wpmtst_show_field_select_options( $key, $field ) {
 function wpmtst_show_field_hidden( $key, $field ) {
 	$pattern = '<input type="hidden" name="fields[%s][%s]" value="%s">';
 
-	$html  = sprintf( $pattern, $key, 'record_type', $field['record_type'] ) . "\n";
+	$html  = sprintf( $pattern, $key, 'record_type', $field['record_type'] ?? '' ) . "\n";
 	$html .= sprintf( $pattern, $key, 'input_type', $field['input_type'] ) . "\n";
 	if ( isset( $field['action_input'] ) ) {
 		$html .= sprintf( $pattern, $key, 'action_input', $field['action_input'] ) . "\n";

@@ -47,21 +47,21 @@
 		<?php else : ?>
 
 			<?php
-			if ( 'post' === $field['record_type'] ) {
+			if ( 'post' === ( $field['record_type'] ?? '' ) ) {
 				foreach ( $field_types['post'] as $field_key => $field_parts ) {
 					// compare field *name*
 					if ( $field['name'] === $field_key ) {
 						echo esc_html( $field_parts['option_label'] );
 					}
 				}
-			} elseif ( 'custom' === $field['record_type'] ) {
+			} elseif ( 'custom' === ( $field['record_type'] ?? '' ) ) {
 				foreach ( $field_types['custom'] as $field_key => $field_parts ) {
 					// compare field *type*
 					if ( $field['input_type'] === $field_key ) {
 						echo esc_html( $field_parts['option_label'] );
 					}
 				}
-			} elseif ( 'optional' === $field['record_type'] ) {
+			} elseif ( 'optional' === ( $field['record_type'] ?? '' ) ) {
 				foreach ( $field_types['optional'] as $field_key => $field_parts ) {
 					// compare field *type*
 					if ( $field['input_type'] === $field_key ) {

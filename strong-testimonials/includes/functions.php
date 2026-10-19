@@ -241,7 +241,7 @@ function wpmtst_get_custom_fields() {
 		if ( isset( $form['fields'] ) ) {
 			$fields = $form['fields'];
 			foreach ( $fields as $field ) {
-				if ( 'post' !== $field['record_type'] ) {
+				if ( 'post' !== ( $field['record_type'] ?? '' ) ) {
 					$custom_fields[ $field['name'] ] = $field;
 				}
 			}

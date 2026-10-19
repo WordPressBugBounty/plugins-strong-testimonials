@@ -800,9 +800,9 @@ class Strong_Testimonials_Helper {
 		?>
 
 		<th>
-			<?php echo wp_kses_post( $this->field['before'] ); ?>
+			<?php echo wp_kses( $this->field['before'], 'strong_testimonials' ); ?>
 			<label for="<?php echo esc_attr( $this->field['class'] ); ?>"><?php echo wp_kses_post( $this->field['label'] ); ?></label>
-			<?php echo wp_kses_post( $this->field['after'] ); ?>
+			<?php echo wp_kses( $this->field['after'], 'strong_testimonials' ); ?>
 		</th> 
 		<?php
 		switch ( $this->field['type'] ) {
@@ -1722,7 +1722,7 @@ class Strong_Testimonials_Helper {
 									<optgroup label="<?php esc_html_e( 'Custom', 'strong-testimonials' ); ?>">
 										<?php
 										foreach ( $custom_list as $page ) {
-											echo wp_kses_post( $page );
+											echo wp_kses( $page, 'strong_testimonials' );
 										}
 										?>
 									</optgroup>

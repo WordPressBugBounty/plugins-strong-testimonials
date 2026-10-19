@@ -58,14 +58,13 @@ add_action( 'init', 'wpmtst_content_filters' );
 
 function wpmtst_add_allowed_tags( $tags, $context = '' ) {
 
-	// These extra tags are allowed only in the plugin's own trusted rendering
-	// context, never in the core contexts (post, comment, ...) that also
-	// sanitise user-submitted content. Form controls and data-* are omitted on
-	// purpose: the plugin prints its own forms directly (not through kses), and
-	// allowing them here is what enabled form-injection and Interactivity XSS.
+	// Only for markup the plugin builds itself (admin editors). Never widen the
+	// core contexts (post, comment, ...) that also sanitise user content.
 	if ( 'strong_testimonials' !== $context ) {
 		return $tags;
 	}
+
+	$tags = wp_kses_allowed_html( 'post' );
 
 	$tags['iframe'] = array(
 		'src'             => true,
@@ -74,9 +73,66 @@ function wpmtst_add_allowed_tags( $tags, $context = '' ) {
 		'frameborder'     => true,
 		'allowfullscreen' => true,
 		'style'           => true,
+		'data-*'          => true,
 		'hidden'          => true,
 	);
-	$tags['source'] = array(
+	$tags['input'] = array(
+		'class'       => true,
+		'id'          => true,
+		'name'        => true,
+		'value'       => true,
+		'type'        => true,
+		'placeholder' => true,
+		'required'    => true,
+		'checked'     => true,
+		'title'       => true,
+		'style'       => true,
+		'data-*'      => true,
+		'hidden'      => true,
+	);
+	$tags['textarea'] = array(
+		'class'       => true,
+		'id'          => true,
+		'name'        => true,
+		'value'       => true,
+		'type'        => true,
+		'placeholder' => true,
+		'required'    => true,
+		'style'       => true,
+		'data-*'      => true,
+		'hidden'      => true,
+	);
+	$tags['select'] = array(
+		'class'  => true,
+		'id'     => true,
+		'name'   => true,
+		'value'  => true,
+		'type'   => true,
+		'style'  => true,
+		'data-*' => true,
+		'hidden' => true,
+	);
+	$tags['option']   = array(
+		'selected' => true,
+		'class'    => true,
+		'id'       => true,
+		'name'     => true,
+		'value'    => true,
+		'style'    => true,
+		'data-*'   => true,
+		'hidden'   => true,
+	);
+	$tags['optgroup'] = array(
+		'class'  => true,
+		'id'     => true,
+		'name'   => true,
+		'value'  => true,
+		'label'  => true,
+		'style'  => true,
+		'data-*' => true,
+		'hidden' => true,
+	);
+	$tags['source']   = array(
 		'type' => true,
 		'src'  => true,
 	);
@@ -85,6 +141,8 @@ function wpmtst_add_allowed_tags( $tags, $context = '' ) {
 
 	$tags['img']['srcset'] = true;
 	$tags['img']['sizes']  = true;
+
+	$tags['div']['data-*'] = true;
 
 	$tags['noscript'] = array();
 

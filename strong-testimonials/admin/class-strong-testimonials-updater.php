@@ -409,8 +409,26 @@ class Strong_Testimonials_Updater {
 			return Strong_Testimonials_Defaults::get_custom_forms();
 		}
 
+		$known_fields = self::get_known_fields();
+		$field_types  = apply_filters( 'wpmtst_fields', get_option( 'wpmtst_fields', array() ) );
+		$field_types  = isset( $field_types['field_types'] ) ? $field_types['field_types'] : array();
+		$repaired     = 0;
+
 		foreach ( $custom_forms as $form_id => $form_properties ) {
 			foreach ( $form_properties['fields'] as $key => $form_field ) {
+
+				/*
+				 * Restore field properties lost when the 3.3.13 field editor
+				 * dropped its hidden inputs on save.
+				 */
+				if ( empty( $form_field['record_type'] ) ) {
+					$restored_field = self::restore_field_properties( $form_field, $known_fields, $field_types );
+					if ( $restored_field !== $form_field ) {
+						$form_field                                 = $restored_field;
+						$custom_forms[ $form_id ]['fields'][ $key ] = $form_field;
+						++$repaired;
+					}
+				}
 
 				/*
 				 * Convert categories to category-selector.
@@ -468,7 +486,80 @@ class Strong_Testimonials_Updater {
 			}
 		}
 
+		if ( $repaired ) {
+			self::log( __FUNCTION__, 'restored field properties', $repaired );
+		}
+
 		return $custom_forms;
+	}
+
+	/**
+	 * Default field definitions keyed by field name.
+	 *
+	 * @return array
+	 */
+	private static function get_known_fields() {
+		$known_fields = array();
+
+		foreach ( Strong_Testimonials_Defaults::get_base_forms() as $base_form ) {
+			foreach ( $base_form['fields'] as $base_field ) {
+				if ( ! empty( $base_field['name'] ) && ! isset( $known_fields[ $base_field['name'] ] ) ) {
+					$known_fields[ $base_field['name'] ] = $base_field;
+				}
+			}
+		}
+
+		return $known_fields;
+	}
+
+	/**
+	 * Restore the field properties the form editor posts as hidden inputs.
+	 *
+	 * Only fields whose name matches a default field can be restored; others
+	 * are returned unchanged.
+	 *
+	 * @param array $form_field
+	 * @param array $known_fields
+	 * @param array $field_types  Field types as filtered for the form editor.
+	 *
+	 * @return array
+	 */
+	private static function restore_field_properties( $form_field, $known_fields, $field_types ) {
+		if ( empty( $form_field['name'] ) || ! isset( $known_fields[ $form_field['name'] ] ) ) {
+			return $form_field;
+		}
+
+		$default_field = $known_fields[ $form_field['name'] ];
+		$record_type   = $default_field['record_type'];
+		$type_key      = 'post' === $record_type ? $default_field['name'] : $default_field['input_type'];
+		if ( isset( $field_types[ $record_type ][ $type_key ] ) ) {
+			$default_field = array_merge( $default_field, $field_types[ $record_type ][ $type_key ] );
+		}
+
+		$hidden_keys = array(
+			'record_type',
+			'input_type',
+			'action_input',
+			'action_output',
+			'map',
+			'core',
+			'name_mutable',
+			'show_text_option',
+			'show_placeholder_option',
+			'show_default_options',
+			'admin_table_option',
+			'show_admin_table_option',
+			'show_shortcode_options',
+			'show_length_option',
+		);
+
+		foreach ( $hidden_keys as $hidden_key ) {
+			if ( array_key_exists( $hidden_key, $default_field ) ) {
+				$form_field[ $hidden_key ] = $default_field[ $hidden_key ];
+			}
+		}
+
+		return $form_field;
 	}
 
 	/**
