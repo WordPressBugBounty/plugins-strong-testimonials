@@ -39,6 +39,18 @@ function wpmtst_get_form_preview() {
 	}
 	$shortcode_regex = get_shortcode_regex();
 
+	// Input callbacks come only from registered field types, never from the request.
+	$type_actions = array();
+	if ( isset( $fields['field_types'] ) && is_array( $fields['field_types'] ) ) {
+		foreach ( $fields['field_types'] as $field_group ) {
+			foreach ( (array) $field_group as $field_type ) {
+				if ( ! empty( $field_type['input_type'] ) && ! empty( $field_type['action_input'] ) && ! isset( $type_actions[ $field_type['input_type'] ] ) ) {
+					$type_actions[ $field_type['input_type'] ] = $field_type['action_input'];
+				}
+			}
+		}
+	}
+
 	foreach ( $preview['fields'] as $key => $field ) {
 		/*
 		 * Before merging onto base field, catch fields that are "off"
@@ -48,10 +60,14 @@ function wpmtst_get_form_preview() {
 		$field['show_label'] = isset( $field['show_label'] ) ? 1 : 0;
 		$field['required']   = isset( $field['required'] ) ? 1 : 0;
 
-		$field = array_merge( $fields['field_base'], $field );
+		// Type-specific options (e.g. select_options) are kept as plain text.
+		$extra = array_diff_key( $field, $fields['field_base'] );
 
+		$field = array_merge( $fields['field_base'], $field );
 		$field = array_intersect_key( $field, $fields['field_base'] );
-		$field['action_input'] = '';
+		$field = array_merge( map_deep( $extra, 'sanitize_text_field' ), $field );
+
+		$field['action_input'] = ( is_string( $field['input_type'] ) && isset( $type_actions[ $field['input_type'] ] ) ) ? $type_actions[ $field['input_type'] ] : '';
 
 		if ( 'none' === $field['input_type'] ) {
 			$field['input_type'] = 'text';

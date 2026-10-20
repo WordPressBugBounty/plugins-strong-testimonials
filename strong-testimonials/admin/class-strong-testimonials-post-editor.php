@@ -25,7 +25,7 @@ class Strong_Testimonials_Post_Editor {
 	 */
 	public static function add_actions() {
 		add_action( 'add_meta_boxes_wpm-testimonial', array( __CLASS__, 'add_meta_boxes' ) );
-		add_action( 'save_post_wpm-testimonial', array( __CLASS__, 'save_details' ) );
+		add_action( 'save_post_wpm-testimonial', array( __CLASS__, 'save_details' ), 10, 2 );
 		add_action( 'wp_ajax_wpmtst_edit_rating', array( __CLASS__, 'edit_rating' ) );
 		add_filter( 'wp_insert_post_data', array( __CLASS__, 'prevent_shortcode' ), 10, 2 );
 	}
@@ -290,12 +290,25 @@ class Strong_Testimonials_Post_Editor {
 	 *
 	 * @since 2.23.2 Delete meta record when rating is zero to allow default display value.
 	 */
-	public static function save_details() {
-		if ( ! isset( $_POST['custom'] ) || ! isset( $_POST['post_ID'] ) || ! wp_verify_nonce( $_POST['wpmtst_metabox_nonce'], plugin_basename( __FILE__ ) ) ) {
+	public static function save_details( $post_id = 0, $post = null ) {
+		if ( ! isset( $_POST['custom'], $_POST['post_ID'], $_POST['wpmtst_metabox_nonce'] ) || ! is_array( $_POST['custom'] ) ) {
 			return;
 		}
 
-		$post_id = absint( $_POST['post_ID'] );
+		if ( ! wp_verify_nonce( $_POST['wpmtst_metabox_nonce'], plugin_basename( __FILE__ ) ) ) {
+			return;
+		}
+
+		// The editor never saves through admin-ajax; front-end form inserts do.
+		if ( wp_doing_ajax() || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || wp_is_post_revision( $post_id ) ) {
+			return;
+		}
+
+		$post_id = absint( $post_id );
+		if ( ! $post_id || absint( $_POST['post_ID'] ) !== $post_id || 'wpm-testimonial' !== get_post_type( $post_id ) || ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+
 		$custom  = $_POST['custom']; // phpcs:ignore sanitization is done underneath ( Data Sanitizationva )
 
 		$custom_fields = wpmtst_get_custom_fields();
@@ -318,13 +331,15 @@ class Strong_Testimonials_Post_Editor {
 				$custom_fields['noreferrer']['input_type'] = '';
 
 		foreach ( $custom as $key => $value ) {
+			if ( ! isset( $custom_fields[ $key ] ) ) {
+				continue;
+			}
+
 			$action          = 'update';
 			$sanitized_value = '';
 
-			if ( isset( $custom_fields[ $key ] ) ) {
-				if ( 'rating' === $custom_fields[ $key ]['input_type'] && ! $value ) {
-					$action = 'delete';
-				}
+			if ( 'rating' === $custom_fields[ $key ]['input_type'] && ! $value ) {
+				$action = 'delete';
 			}
 
 			// Data Sanitizationva
