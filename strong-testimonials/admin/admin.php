@@ -143,7 +143,50 @@ function wpmtst_restore_default_icon( $input_for ) {
 	<?php
 }
 
+function wpmtst_render_post_status_options( $input_name, $current ) {
+	$statuses = wpmtst_get_form_post_statuses();
+	$locked   = isset( $statuses[ $current ] ) && ! empty( $statuses[ $current ]['locked'] );
 
+	if ( ! isset( $statuses[ $current ] ) || $locked ) {
+		$checked = 'pending';
+	} else {
+		$checked = $current;
+	}
+	?>
+	<ul class="compact wpmtst-post-status-options">
+		<?php foreach ( $statuses as $value => $status ) : ?>
+			<?php $is_locked = ! empty( $status['locked'] ); ?>
+			<li class="<?php echo $is_locked ? 'wpmtst-post-status-locked' : ''; ?>">
+				<label>
+					<input type="radio"
+							name="<?php echo esc_attr( $input_name ); ?>"
+							value="<?php echo esc_attr( $value ); ?>"
+							<?php checked( $value, $checked ); ?>
+							<?php disabled( $is_locked ); ?>/>
+					<?php echo esc_html( $status['label'] ); ?>
+				</label>
+				<?php if ( $is_locked && ! empty( $status['badge'] ) ) : ?>
+					<a class="wpmtst-upsell-badge" href="<?php echo esc_url( WPMTST_STORE_UPGRADE_URL . '?utm_source=st-lite&utm_campaign=upsell&utm_medium=' . $value . '-post-status' ); ?>" target="_blank"><?php echo esc_html( $status['badge'] ); ?></a>
+				<?php endif; ?>
+				<?php if ( ! empty( $status['description'] ) ) : ?>
+					<p class="description"><?php echo esc_html( $status['description'] ); ?></p>
+				<?php endif; ?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+	<?php if ( $locked ) : ?>
+		<p class="description wpmtst-post-status-locked-notice">
+			<?php
+			printf(
+				// translators: %s is the name of a post status.
+				esc_html__( '"%s" requires an active Strong Testimonials Pro license. New submissions are saved as Pending.', 'strong-testimonials' ),
+				esc_html( $statuses[ $current ]['label'] )
+			);
+			?>
+		</p>
+	<?php endif; ?>
+	<?php
+}
 
 /**
  * Check for configuration issues when options are updated.

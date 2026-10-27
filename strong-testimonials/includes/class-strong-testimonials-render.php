@@ -652,12 +652,12 @@ class Strong_Testimonials_Render {
 			$view_id = absint( $raw_id );
 			// Reject non-numeric or malformed id (e.g. "1 onmouseover=alert(1)").
 			if ( $view_id < 1 || $raw_id !== (string) $view_id ) {
-				return array_merge( array( 'view_not_found' => 1 ), $atts );
+				return array_merge( $atts, array( 'view_not_found' => 1 ) );
 			}
 			$atts['view'] = $view_id;
 			unset( $atts['id'] );
 		} else {
-			return array_merge( array( 'view_not_found' => 1 ), $atts );
+			return array_merge( $atts, array( 'view_not_found' => 1 ) );
 		}
 
 		$atts['view'] = apply_filters( 'wpmtst_parse_view_id', $atts['view'] );
@@ -671,7 +671,7 @@ class Strong_Testimonials_Render {
 		 * @since 1.21.0
 		 */
 		if ( ! $view ) {
-			return array_merge( array( 'view_not_found' => 1 ), $atts );
+			return array_merge( $atts, array( 'view_not_found' => 1 ) );
 		}
 
 		$view_data = apply_filters( 'wpmtst_parse_view_data', unserialize( $view['value'] ), $atts['view'] );
@@ -721,6 +721,12 @@ class Strong_Testimonials_Render {
 		}
 
 		$out = array_merge( $this->get_view_defaults(), $view_data, $atts );
+
+		foreach ( array( 'thumbnail_width', 'thumbnail_height' ) as $dimension ) {
+			if ( isset( $out[ $dimension ] ) ) {
+				$out[ $dimension ] = absint( $out[ $dimension ] );
+			}
+		}
 
 		if ( 'form' === ( $out['mode'] ?? '' ) && ( empty( $out['template'] ) || 'default' === $out['template'] ) ) {
 			$out['template'] = 'default-form';

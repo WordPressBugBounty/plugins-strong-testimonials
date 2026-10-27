@@ -145,13 +145,33 @@ Start Upsells
 	background : #fff;
 }
 
-span.wpmtst-upsell-badge {
+span.wpmtst-upsell-badge,
+a.wpmtst-upsell-badge {
 	font-size     : 10px;
 	background    : #f4daa4;
 	padding       : 2px 5px;
 	display       : inline-block;
 	margin-left   : 10px;
 	border-radius : 10px;
+}
+
+a.wpmtst-upsell-badge {
+	color           : #1d2327;
+	font-weight     : 600;
+	text-decoration : none;
+}
+
+ul.compact.wpmtst-post-status-options li {
+	display : block;
+	margin  : 0 0 10px;
+}
+
+.wpmtst-post-status-options .description {
+	margin : 2px 0 0 24px;
+}
+
+.wpmtst-post-status-locked label {
+	opacity : .6;
 }
 
 .wpmtst-upsell-checkmark:before {

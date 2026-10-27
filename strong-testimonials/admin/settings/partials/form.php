@@ -200,20 +200,7 @@ $form_options = get_option( 'wpmtst_form_options' );
 			</label>
 		</th>
 		<td>
-			<ul class="compact">
-				<li>
-					<label>
-						<input type="radio" name="wpmtst_form_options[post_status]" value="pending" <?php checked( 'pending', $form_options['post_status'] ); ?>/>
-						<?php esc_html_e( 'Pending', 'strong-testimonials' ); ?>
-					</label>
-				</li>
-				<li>
-					<label>
-						<input type="radio" name="wpmtst_form_options[post_status]" value="publish" <?php checked( 'publish', $form_options['post_status'] ); ?>/>
-						<?php esc_html_e( 'Published', 'strong-testimonials' ); ?>
-					</label>
-				</li>
-			</ul>
+			<?php wpmtst_render_post_status_options( 'wpmtst_form_options[post_status]', $form_options['post_status'] ); ?>
 		</td>
 	</tr>
 

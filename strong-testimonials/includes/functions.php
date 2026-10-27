@@ -915,3 +915,46 @@ function wpmtst_get_star_svg( $type = 'star_solid' ) {
 
 	return '';
 }
+
+function wpmtst_get_form_post_statuses() {
+	$statuses = array(
+		'pending'            => array(
+			'label'       => esc_html__( 'Pending', 'strong-testimonials' ),
+			'description' => esc_html__( 'Testimonials wait for your approval before being published.', 'strong-testimonials' ),
+		),
+		'wpmtst-unconfirmed' => array(
+			'label'       => esc_html__( 'Pending Confirmation', 'strong-testimonials' ),
+			'description' => esc_html__( 'Visitors confirm their email before you review the testimonial.', 'strong-testimonials' ),
+			'locked'      => true,
+			'badge'       => 'PRO',
+		),
+		'publish'            => array(
+			'label'       => esc_html__( 'Published', 'strong-testimonials' ),
+			'description' => esc_html__( 'Testimonials are published immediately.', 'strong-testimonials' ),
+		),
+	);
+
+	$statuses = apply_filters( 'wpmtst_form_post_statuses', $statuses );
+
+	if ( apply_filters( 'wpmtst_disable_upsells', false ) ) {
+		$statuses = array_filter(
+			$statuses,
+			function ( $status ) {
+				return empty( $status['locked'] );
+			}
+		);
+	}
+
+	return $statuses;
+}
+
+function wpmtst_sanitize_form_post_status( $status ) {
+	$statuses = wpmtst_get_form_post_statuses();
+	$status   = sanitize_key( $status );
+
+	if ( ! isset( $statuses[ $status ] ) || ! empty( $statuses[ $status ]['locked'] ) ) {
+		return 'pending';
+	}
+
+	return $status;
+}

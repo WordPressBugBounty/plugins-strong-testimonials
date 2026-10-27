@@ -316,7 +316,7 @@ if ( ! class_exists( 'Strong_View_Slideshow' ) ) :
 		 * @return string
 		 */
 		private function slideshow_signature() {
-			return 'strong_slider_id_' . $this->atts['view'];
+			return 'strong_slider_id_' . absint( $this->atts['view'] );
 		}
 
 		/**

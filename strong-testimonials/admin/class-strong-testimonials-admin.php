@@ -150,6 +150,7 @@ class Strong_Testimonials_Admin {
 					'draft',
 					'inherit',
 					'pending',
+					'wpmtst-unconfirmed',
 				),
 			)
 		);

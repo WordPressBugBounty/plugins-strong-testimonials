@@ -210,7 +210,7 @@ class Strong_Testimonials_Form {
 
 		// Init four arrays: post, post_meta, categories, attachment(s).
 		$testimonial_post = array(
-			'post_status' => $form_options['post_status'],
+			'post_status' => wpmtst_sanitize_form_post_status( $form_options['post_status'] ),
 			'post_type'   => 'wpm-testimonial',
 		);
 		$testimonial_meta = array();
@@ -289,7 +289,8 @@ class Strong_Testimonials_Form {
 						if ( 'category' === strtok( $field['input_type'], '-' ) ) {
 							$testimonial_meta[ $field['name'] ] = $new_post[ $field['name'] ];
 						} elseif ( 'rating' === $field['input_type'] ) {
-							$testimonial_meta[ $field['name'] ] = $new_post[ $field['name'] ];
+							// Keep '' so the field's default display value still applies.
+							$testimonial_meta[ $field['name'] ] = '' === $new_post[ $field['name'] ] ? '' : absint( $new_post[ $field['name'] ] );
 						} else {
 							$testimonial_meta[ $field['name'] ] = sanitize_text_field( $new_post[ $field['name'] ] );
 						}

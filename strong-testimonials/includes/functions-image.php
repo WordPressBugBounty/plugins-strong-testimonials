@@ -239,7 +239,10 @@ function wpmtst_thumbnail_img_platform_general( $img, $post_id, $size ) {
 		$height = $sizes['height'];
 	}
 
-	return sprintf( '<img src="%s" %s %s/>', esc_url( $platform_user_photo ), $width ? "width='{$width}'" : '', $height ? "height='{$height}'" : '' );
+	$width  = (int) $width;
+	$height = (int) $height;
+
+	return sprintf( '<img src="%s" %s %s/>', esc_url( $platform_user_photo ), $width ? sprintf( 'width="%d"', $width ) : '', $height ? sprintf( 'height="%d"', $height ) : '' );
 }
 add_filter( 'wpmtst_thumbnail_img_platform_facebook', 'wpmtst_thumbnail_img_platform_general', 10, 3 );
 add_filter( 'wpmtst_thumbnail_img_platform_yelp', 'wpmtst_thumbnail_img_platform_general', 10, 3 );
@@ -268,7 +271,10 @@ function wpmtst_thumbnail_img_platform_woocommerce( $img, $post_id, $size ) {
 		$height = $sizes['height'];
 	}
 
-	return sprintf( '<img src="%s" %s %s/>', esc_url( get_avatar_url( $email ) ), $width ? "width='{$width}'" : '', $height ? "height='{$height}'" : '' );
+	$width  = (int) $width;
+	$height = (int) $height;
+
+	return sprintf( '<img src="%s" %s %s/>', esc_url( get_avatar_url( $email ) ), $width ? sprintf( 'width="%d"', $width ) : '', $height ? sprintf( 'height="%d"', $height ) : '' );
 }
 add_filter( 'wpmtst_thumbnail_img_platform_woocommerce', 'wpmtst_thumbnail_img_platform_woocommerce', 10, 3 );
 

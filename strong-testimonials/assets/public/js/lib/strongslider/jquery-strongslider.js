@@ -298,7 +298,7 @@
 		} else {
 
 		  if (slider.visibilityInterval === 0) {
-			slider.visibilityInterval = setInterval(initVisibilityCheck, 1000 * 4);
+			slider.visibilityInterval = setInterval(initVisibilityCheck, 250);
 		  }
 
 		}
@@ -1246,7 +1246,7 @@
 		  }
 		  if (position) {
 			if (slider.settings.mode === 'horizontal') { setPositionProperty(-position.left, 'reset', 0); }
-			else if (slider.settings.mode === 'vertical') { setPositionProperty(-position.top, 'reset', 0); }
+			else if (slider.settings.mode === 'vertical' || slider.settings.mode === 'none') { setPositionProperty(-position.top, 'reset', 0); }
 		  }
 		}
 		// declare that the transition is complete

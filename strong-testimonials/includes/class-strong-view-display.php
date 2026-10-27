@@ -478,7 +478,7 @@ if ( ! class_exists( 'Strong_View_Display' ) ) :
 		 * @return string
 		 */
 		public function pager_signature() {
-			return 'strong_pager_id_' . $this->atts['view'];
+			return 'strong_pager_id_' . absint( $this->atts['view'] );
 		}
 
 		/**
