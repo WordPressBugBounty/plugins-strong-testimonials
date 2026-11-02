@@ -550,7 +550,7 @@ class Strong_Testimonials_Helper {
 		// Select default template if necessary
 		if ( ! $this->view['template'] ) {
 			if ( 'form' === $this->view['mode'] ) {
-				$this->view['template'] = 'default-form-theme';
+				$this->view['template'] = wpmtst_get_default_form_template();
 			} else {
 				$this->view['template'] = 'default-theme';
 			}
@@ -2185,8 +2185,8 @@ class Strong_Testimonials_Helper {
 		);
 
 		$current_template = $this->view['template'];
-		if ( 'form' === $this->current_type && ! isset( $templates['form'][ $current_template ] ) ) {
-			$current_template = $this->view['form_template'] ?? '';
+		if ( 'form' === $this->current_type ) {
+			$current_template = wpmtst_resolve_form_template( $current_template );
 		}
 
 		$template_found = in_array( $current_template, WPMST()->templates->get_template_keys(), true );

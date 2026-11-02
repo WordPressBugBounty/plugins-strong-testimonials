@@ -728,8 +728,8 @@ class Strong_Testimonials_Render {
 			}
 		}
 
-		if ( 'form' === ( $out['mode'] ?? '' ) && ( empty( $out['template'] ) || 'default' === $out['template'] ) ) {
-			$out['template'] = 'default-form';
+		if ( 'form' === ( $out['mode'] ?? '' ) ) {
+			$out['template'] = wpmtst_resolve_form_template( $out['template'] ?? '' );
 		}
 
 		return $out;

@@ -23,6 +23,8 @@ function wpmtst_l10n_filters_wpml() {
 	// Update strings
 	add_action( 'update_option_wpmtst_custom_forms', 'wpmtst_form_fields_wpml', 10, 2 );
 	add_action( 'update_option_wpmtst_form_options', 'wpmtst_form_options_wpml', 10, 2 );
+	add_action( 'add_option_wpmtst_custom_forms', 'wpmtst_form_fields_wpml', 10, 2 );
+	add_action( 'add_option_wpmtst_form_options', 'wpmtst_form_options_wpml', 10, 2 );
 	add_action( 'wpmtst_view_saved', 'wpmtst_update_view_wpml' );
 
 	// Help
@@ -126,33 +128,32 @@ function wpmtst_form_fields_wpml( $oldvalue, $newvalue, $option = 'wpmtst_custom
 		$name    = $field['name'] . ' : ';
 		$context = 'strong-testimonials-form-fields';
 
-		/* Translators: A form field on the String Translation screen. */
 		if ( isset( $field['after'] ) ) {
-			do_action( 'wpml_register_single_string', $context, $name . __( 'after', 'strong-testimonials' ), $field['after'] );
+			do_action( 'wpml_register_single_string', $context, $name . 'after', $field['after'] );
 		}
 
 		if ( isset( $field['before'] ) ) {
-			do_action( 'wpml_register_single_string', $context, $name . __( 'before', 'strong-testimonials' ), $field['before'] );
+			do_action( 'wpml_register_single_string', $context, $name . 'before', $field['before'] );
 		}
 
 		if ( isset( $field['placeholder'] ) ) {
-			do_action( 'wpml_register_single_string', $context, $name . __( 'placeholder', 'strong-testimonials' ), $field['placeholder'] );
+			do_action( 'wpml_register_single_string', $context, $name . 'placeholder', $field['placeholder'] );
 		}
 
 		if ( isset( $field['label'] ) ) {
-			do_action( 'wpml_register_single_string', $context, $name . __( 'label', 'strong-testimonials' ), $field['label'] );
+			do_action( 'wpml_register_single_string', $context, $name . 'label', $field['label'] );
 		}
 
 		if ( isset( $field['text'] ) ) {
-			do_action( 'wpml_register_single_string', $context, $name . __( 'text', 'strong-testimonials' ), $field['text'] );
+			do_action( 'wpml_register_single_string', $context, $name . 'text', $field['text'] );
 		}
 
 		if ( isset( $field['default_form_value'] ) ) {
-			do_action( 'wpml_register_single_string', $context, $name . __( 'default form value', 'strong-testimonials' ), $field['default_form_value'] );
+			do_action( 'wpml_register_single_string', $context, $name . 'default form value', $field['default_form_value'] );
 		}
 
 		if ( isset( $field['default_display_value'] ) ) {
-			do_action( 'wpml_register_single_string', $context, $name . __( 'default display value', 'strong-testimonials' ), $field['default_display_value'] );
+			do_action( 'wpml_register_single_string', $context, $name . 'default display value', $field['default_display_value'] );
 		}
 	}
 }
@@ -176,8 +177,8 @@ function wpmtst_form_options_wpml( $oldvalue, $newvalue, $option = 'wpmtst_form_
 
 	// Form notification
 	$context = 'strong-testimonials-notification';
-	do_action( 'wpml_register_single_string', $context, __( 'Email message', 'strong-testimonials' ), $newvalue['email_message'] );
-	do_action( 'wpml_register_single_string', $context, __( 'Email subject', 'strong-testimonials' ), $newvalue['email_subject'] );
+	do_action( 'wpml_register_single_string', $context, 'Email message', $newvalue['email_message'] );
+	do_action( 'wpml_register_single_string', $context, 'Email subject', $newvalue['email_subject'] );
 }
 
 /**
@@ -190,16 +191,13 @@ function wpmtst_form_options_wpml( $oldvalue, $newvalue, $option = 'wpmtst_form_
 function wpmtst_readmore_wpml( $options ) {
 	$context = 'strong-testimonials-read-more';
 
-	/* Translators: %s is the View ID. */
-	$string = sprintf( __( 'View %s : Read more (testimonial)', 'strong-testimonials' ), $options['id'] );
+	$string = sprintf( 'View %s : Read more (testimonial)', $options['id'] );
 	do_action( 'wpml_register_single_string', $context, $string, $options['more_post_text'] );
 
-	/* Translators: %s is the View ID. */
-	$string = sprintf( __( 'View %s : Read less (testimonial)', 'strong-testimonials' ), $options['id'] );
+	$string = sprintf( 'View %s : Read less (testimonial)', $options['id'] );
 	do_action( 'wpml_register_single_string', $context, $string, $options['less_post_text'] );
 
-	/* Translators: %s is the View ID. */
-	$string = sprintf( __( 'View %s : Read more (page or post)', 'strong-testimonials' ), $options['id'] );
+	$string = sprintf( 'View %s : Read more (page or post)', $options['id'] );
 	do_action( 'wpml_register_single_string', $context, $string, $options['more_page_text'] );
 }
 

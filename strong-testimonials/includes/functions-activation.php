@@ -213,7 +213,8 @@ function wpmtst_create_default_views() {
 	// Testimonials Collection Form — create once; if stored ID exists the user has already seen/deleted it.
 	if ( ! isset( $stored_ids['form'] ) && ! wpmtst_mode_view_exists( $table, 'form' ) ) {
 		$view         = Strong_Testimonials_Defaults::get_default_view();
-		$view['mode'] = 'form';
+		$view['mode']     = 'form';
+		$view['template'] = wpmtst_get_default_form_template();
 		$wpdb->query( // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$wpdb->prepare(
 				"INSERT INTO {$table} (name, value) VALUES (%s, %s)",

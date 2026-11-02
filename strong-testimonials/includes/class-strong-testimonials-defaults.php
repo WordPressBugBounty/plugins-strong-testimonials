@@ -822,7 +822,6 @@ class Strong_Testimonials_Defaults {
 				'nav_position'       => 'inside',
 			),
 			'template'              => 'default-theme',
-			'form_template'         => 'default-form-theme',
 			'template_settings'     => array(),
 			'thumbnail'             => true,
 			'thumbnail_size'        => 'thumbnail',

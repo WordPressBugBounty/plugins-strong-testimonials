@@ -100,3 +100,25 @@ function wpmtst_find_single_template_view() {
 
 	return false;
 }
+
+/**
+ * Return the default template for form views.
+ *
+ * @return string
+ */
+function wpmtst_get_default_form_template() {
+	return apply_filters( 'wpmtst_default_form_template', 'default-form-theme' );
+}
+
+/**
+ * Return the template if it is an available form template, otherwise the default form template.
+ *
+ * @param string $template
+ *
+ * @return string
+ */
+function wpmtst_resolve_form_template( $template ) {
+	$form_templates = WPMST()->templates->get_templates( 'form' );
+
+	return isset( $form_templates[ (string) $template ] ) ? $template : wpmtst_get_default_form_template();
+}

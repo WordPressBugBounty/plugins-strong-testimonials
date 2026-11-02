@@ -128,17 +128,7 @@ if ( ! class_exists( 'Strong_View_Form' ) ) :
 			/**
 			 * Locate template.
 			 */
-			$form_atts = $this->atts;
-			if ( isset( $form_atts['form_template'] ) && $form_atts['form_template'] ) {
-				$form_atts['template'] = $form_atts['form_template'];
-			} else {
-				$form_atts['template'] = 'default-form-theme';
-			}
-			$template_file = WPMST()->templates->get_template_attr( $form_atts, 'template' );
-			if ( ! $template_file ) {
-				$template_file = WPMST()->templates->get_template_attr( array( 'template' => 'default-form-theme' ), 'template' );
-			}
-			$this->template_file = apply_filters( 'wpmtst_view_template_file_form', $template_file );
+			$this->template_file = apply_filters( 'wpmtst_view_template_file_form', WPMST()->templates->get_template_attr( $this->atts, 'template' ) );
 
 			/**
 			 * Allow add-ons to hijack the output generation.
@@ -165,7 +155,7 @@ if ( ! class_exists( 'Strong_View_Form' ) ) :
 			}
 			// TODO apply content filters
 
-			$html = $this->template_not_found_notice( $form_atts['template'] ) . $html;
+			$html = $this->template_not_found_notice( $this->atts['template'] ) . $html;
 
 			/**
 			 * Remove filters here.

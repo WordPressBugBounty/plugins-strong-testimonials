@@ -510,9 +510,9 @@ jQuery(document).ready(function ($) {
     $.fn.updateScreen(currentMode);
 
     // Force default template since we have more than one group of templates.
-    $('input[type=radio][name=\'view[data][template]\'][value=\'default\']').prop('checked', true);
+    $('input[type=radio][name=\'view[data][template]\'][value=\'' + wpmtstViewTemplates.template + '\']').prop('checked', true);
     templateRadios.trigger( 'change' );
-    $('input[type=radio][name=\'view[data][form-template]\'][value=\'default-form\']').prop('checked', true);
+    $('input[type=radio][name=\'view[data][form-template]\'][value=\'' + wpmtstViewTemplates.formTemplate + '\']').prop('checked', true);
     // formTemplateRadios.trigger( 'change' );
     layoutRadios.trigger( 'change' );
     backgroundRadios.trigger( 'change' );

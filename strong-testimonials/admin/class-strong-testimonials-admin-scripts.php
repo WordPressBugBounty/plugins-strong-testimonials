@@ -214,6 +214,16 @@ class Strong_Testimonials_Admin_Scripts {
 			'before'
 		);
 
+		$default_view = wpmtst_get_view_default();
+		wp_localize_script(
+			'wpmtst-admin-views-script',
+			'wpmtstViewTemplates',
+			array(
+				'template'     => $default_view['template'] ?? '',
+				'formTemplate' => wpmtst_get_default_form_template(),
+			)
+		);
+
 		/**
 		 * Category filter in View editor.
 		 *
