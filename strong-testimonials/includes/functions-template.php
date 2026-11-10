@@ -362,7 +362,7 @@ function wpmtst_the_custom_field( $field ) {
 					default: // value
 						$text = get_post_meta( $post->ID, $field_name, true );
 						// if no URL (next condition), show the alternate (the field)
-						$output = $text;
+						$output = wpmtst_encode_shortcode_brackets( $text );
 				}
 
 				if ( $field['url'] ) {
@@ -418,7 +418,10 @@ function wpmtst_the_custom_field( $field ) {
 						if ( ! $text || is_array( $text ) ) {
 							$text = preg_replace( '(^https?://)', '', $url );
 						}
-						$output = sprintf( '<a href="%s"%s%s>%s</a>', esc_url( $url ), $newtab, $rel, wp_kses_post( $text ) );
+						// Encode after kses, which decodes the brackets.
+						$link_text = wp_kses_post( $text );
+						$link_text = in_array( $field['link_text'], array( 'custom', 'label' ), true ) ? $link_text : wpmtst_encode_shortcode_brackets( $link_text );
+						$output    = sprintf( '<a href="%s"%s%s>%s</a>', wpmtst_encode_shortcode_brackets( esc_url( $url ) ), $newtab, $rel, $link_text );
 					}
 				}
 				break;
@@ -524,7 +527,7 @@ function wpmtst_the_custom_field( $field ) {
 			default:
 				// text field
 				$output = get_post_meta( $post->ID, $field_name, true );
-				$output = wp_kses_post( $output );
+				$output = wpmtst_encode_shortcode_brackets( wp_kses_post( $output ) );
 				if ( '' === $output && isset( $field['prop']['default_display_value'] ) && $field['prop']['default_display_value'] ) {
 					$output = $field['prop']['default_display_value'];
 				}

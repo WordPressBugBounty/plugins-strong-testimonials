@@ -553,7 +553,7 @@ function wpmtst_form_submit_button( $preview = false ) {
 	$wrap_class = apply_filters( 'wpmtst_form_field_group_class', 'form-field', 'submit', 'submit' ) . ' wpmtst-submit';
 	?>
 	<div class="<?php echo esc_attr( $wrap_class ); ?>">
-		<label><input type="<?php echo $preview ? 'button' : 'submit'; ?>" class="wpmtst_submit_testimonial <?php echo esc_attr( $class ); ?>" name="wpmtst_submit_testimonial" value="<?php echo esc_attr( wpmtst_get_form_message( 'form-submit-button' ) ); ?>" tabindex="0"></label>
+		<input type="<?php echo $preview ? 'button' : 'submit'; ?>" class="wpmtst_submit_testimonial <?php echo esc_attr( $class ); ?>" name="wpmtst_submit_testimonial" value="<?php echo esc_attr( wpmtst_get_form_message( 'form-submit-button' ) ); ?>" tabindex="0">
 	</div>
 	<?php
 }

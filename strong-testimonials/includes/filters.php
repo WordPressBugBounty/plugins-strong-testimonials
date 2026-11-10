@@ -56,6 +56,43 @@ function wpmtst_content_filters() {
 }
 add_action( 'init', 'wpmtst_content_filters' );
 
+/**
+ * Encode square brackets so submitted text cannot form a shortcode. Browsers still show them as [ ].
+ *
+ * @param mixed $value
+ *
+ * @return mixed
+ */
+function wpmtst_encode_shortcode_brackets( $value ) {
+	if ( ! is_string( $value ) || apply_filters( 'wpmtst_allow_testimonial_shortcodes', false ) ) {
+		return $value;
+	}
+
+	return str_replace( array( '[', ']' ), array( '&#91;', '&#93;' ), $value );
+}
+
+/**
+ * Encode a new testimonial. Posts wait for wp_insert_post_data because kses decodes the brackets on save.
+ *
+ * @param array $data
+ *
+ * @return array
+ */
+function wpmtst_encode_new_testimonial( $data ) {
+	remove_filter( 'wp_insert_post_data', 'wpmtst_encode_new_testimonial', 100 );
+
+	return map_deep( $data, 'wpmtst_encode_shortcode_brackets' );
+}
+add_filter( 'wpmtst_new_testimonial_meta', 'wpmtst_encode_new_testimonial', 99 );
+add_filter(
+	'wpmtst_new_testimonial_post',
+	function ( $post ) {
+		add_filter( 'wp_insert_post_data', 'wpmtst_encode_new_testimonial', 100 );
+		return $post;
+	},
+	99
+);
+
 function wpmtst_add_allowed_tags( $tags, $context = '' ) {
 
 	// Only for markup the plugin builds itself (admin editors). Never widen the

@@ -380,7 +380,7 @@ class Strong_Testimonials_Post_Editor {
 	 */
 	public static function prevent_shortcode( $data, $postarr ) {
 		if ( 'wpm-testimonial' === $data['post_type'] ) {
-			$data['post_content'] = preg_replace( '/\[testimonial_view (.*)\]/', '', $data['post_content'] );
+			$data['post_content'] = preg_replace( '/\[testimonial_view[^\]]*\]/', '', $data['post_content'] );
 		}
 
 		return $data;
