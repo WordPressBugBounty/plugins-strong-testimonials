@@ -380,7 +380,13 @@ class Strong_Testimonials_Post_Editor {
 	 */
 	public static function prevent_shortcode( $data, $postarr ) {
 		if ( 'wpm-testimonial' === $data['post_type'] ) {
+			$before               = $data['post_content'];
 			$data['post_content'] = preg_replace( '/\[testimonial_view[^\]]*\]/', '', $data['post_content'] );
+
+			// The regex can break an already-sanitized tag, so re-sanitize when it changed.
+			if ( $data['post_content'] !== $before && ! current_user_can( 'unfiltered_html' ) ) {
+				$data['post_content'] = wp_filter_post_kses( $data['post_content'] );
+			}
 		}
 
 		return $data;

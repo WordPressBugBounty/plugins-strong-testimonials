@@ -696,6 +696,22 @@ function wpmtst_single_template_add_content( $content ) {
 add_filter( 'the_content', 'wpmtst_single_template_add_content' );
 
 /**
+ * Sanitize the testimonial's own content on the single view, before the template markup is appended.
+ *
+ * @param string $content
+ *
+ * @return string
+ */
+function wpmtst_single_kses_content( $content ) {
+	if ( is_singular( 'wpm-testimonial' ) && in_the_loop() && is_main_query() ) {
+		$content = wp_kses_post( $content );
+	}
+
+	return $content;
+}
+add_filter( 'the_content', 'wpmtst_single_kses_content', 6 );
+
+/**
  * Frequent plugin checks.
  *
  * A combination of an array of frequent plugin names, and core's is_plugin_active functions
@@ -754,8 +770,8 @@ function wpmtst_sanitize_textarea( $text ) {
 
 	if ( strpos( $filtered, '<' ) !== false ) {
 		$filtered = wp_pre_kses_less_than( $filtered );
-		// This will NOT strip extra whitespace.
-		$filtered = wp_strip_all_tags( $filtered, false );
+		// kses (no tags allowed) also removes whitespace-prefixed pseudo-tags like "< img>".
+		$filtered = wp_kses( $filtered, array() );
 	}
 
 	while ( preg_match( '/%[a-f0-9]{2}/i', $filtered, $match ) ) {

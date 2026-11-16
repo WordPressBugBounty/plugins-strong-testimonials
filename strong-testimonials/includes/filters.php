@@ -32,6 +32,10 @@ add_filter( 'strong_view_form_html', 'wpmtst_remove_whitespace' );
  */
 function wpmtst_content_filters() {
 
+	// Runs before embeds (priority 8) so generated markup is not stripped.
+	add_filter( 'wpmtst_the_content', 'wp_kses_post', 6 );
+	add_filter( 'wpmtst_the_excerpt', 'wp_kses_post', 6 );
+
 	add_filter( 'wpmtst_the_content', array( $GLOBALS['wp_embed'], 'run_shortcode' ), 8 );
 	add_filter( 'wpmtst_the_content', array( $GLOBALS['wp_embed'], 'autoembed' ), 8 );
 	add_filter( 'wpmtst_the_content', 'wptexturize' );
