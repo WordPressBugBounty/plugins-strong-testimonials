@@ -212,16 +212,24 @@ class strongValidation {
 							return "Please wait while the form is submitted.";
 						}
 
-						var formOptions = {
-							url    : instance.settings.ajaxUrl,
-							data   : {
-								action: 'wpmtst_form2'
+						var formData = new FormData(instance.form.get(0));
+						formData.set('action', 'wpmtst_form2');
+
+						jQuery.ajax({
+							url        : instance.settings.ajaxUrl,
+							type       : 'POST',
+							data       : formData,
+							processData: false,
+							contentType: false,
+							dataType   : 'text',
+							success    : function (response) {
+								instance.showResponse(response);
 							},
-							success: function (success) {
-								instance.showResponse(success);
+							error      : function () {
+								window.onbeforeunload = null;
+								instance.enableForm();
 							},
-						};
-						instance.form.ajaxSubmit(formOptions);
+						});
 
 					} else {
 
