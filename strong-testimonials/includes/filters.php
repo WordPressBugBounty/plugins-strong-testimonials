@@ -76,6 +76,54 @@ function wpmtst_encode_shortcode_brackets( $value ) {
 }
 
 /**
+ * Whether a testimonial came from the submission form.
+ *
+ * @param int $post_id
+ *
+ * @return bool
+ */
+function wpmtst_is_submitted_testimonial( $post_id ) {
+	return $post_id && 'wpm-testimonial' === get_post_type( $post_id ) && '' !== (string) get_post_meta( $post_id, 'submit_date', true );
+}
+
+/**
+ * The classic editor decodes the stored &#91; &#93;, so submitted testimonials are encoded again on output.
+ *
+ * @param string $content
+ *
+ * @return string
+ */
+function wpmtst_encode_submitted_content( $content ) {
+	$post = get_post();
+	if ( $post && wpmtst_is_submitted_testimonial( $post->ID ) ) {
+		$content = wpmtst_encode_shortcode_brackets( $content );
+	}
+
+	return $content;
+}
+add_filter( 'the_content', 'wpmtst_encode_submitted_content', 7 );
+add_filter( 'wpmtst_the_content', 'wpmtst_encode_submitted_content', 7 );
+add_filter( 'wpmtst_the_excerpt', 'wpmtst_encode_submitted_content', 7 );
+
+/**
+ * Keep the brackets encoded when a submitted testimonial is saved again from the admin.
+ *
+ * @param array $data
+ * @param array $postarr
+ *
+ * @return array
+ */
+function wpmtst_encode_saved_submitted_testimonial( $data, $postarr ) {
+	if ( ! empty( $postarr['ID'] ) && 'wpm-testimonial' === $data['post_type'] && wpmtst_is_submitted_testimonial( $postarr['ID'] ) ) {
+		$data['post_content'] = wpmtst_encode_shortcode_brackets( $data['post_content'] );
+		$data['post_excerpt'] = wpmtst_encode_shortcode_brackets( $data['post_excerpt'] );
+	}
+
+	return $data;
+}
+add_filter( 'wp_insert_post_data', 'wpmtst_encode_saved_submitted_testimonial', 100, 2 );
+
+/**
  * Encode a new testimonial. Posts wait for wp_insert_post_data because kses decodes the brackets on save.
  *
  * @param array $data

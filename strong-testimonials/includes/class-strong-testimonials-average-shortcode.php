@@ -55,7 +55,7 @@ class Strong_Testimonials_Average_Shortcode {
 		}
 
 		// set parts
-		preg_match_all( '#{(.*?)}#', $content, $parts );
+		preg_match_all( '#\{(title2?|stars|average|count|summary2?)\}#', $content, $parts );
 		/*
 		 * Example:
 		 *
@@ -188,9 +188,19 @@ class Strong_Testimonials_Average_Shortcode {
 			$parts['summary2'] = sprintf( '<span class="strong-rating-summary">%s</span>', $average );
 		}
 
-		// replace tags
+		// Replace tags in text only, never inside an HTML tag, so the author's markup keeps its structure.
+		$replacements = array();
 		foreach ( $tag_list as $key => $tag ) {
-			$content = str_replace( $tag, $parts[ $tag_keys[ $key ] ], $content );
+			$replacements[ $tag ] = $parts[ $tag_keys[ $key ] ];
+		}
+		if ( $replacements ) {
+			$chunks = wp_html_split( $content );
+			foreach ( $chunks as $i => $chunk ) {
+				if ( 0 === $i % 2 ) {
+					$chunks[ $i ] = strtr( $chunk, $replacements );
+				}
+			}
+			$content = implode( '', $chunks );
 		}
 
 		$allowed_elements = array( 'span', 'p', 'i', 'div', 'li', 'ul', 'ol', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' );
