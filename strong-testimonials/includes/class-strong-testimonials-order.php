@@ -291,8 +291,17 @@ class Strong_Testimonials_Order {
 
 		// Reorder
 		foreach ( $id_arr as $key => $id ) {
+			$id = intval( $id );
+
+			// Only testimonials the user may edit; null keeps the response aligned with the list.
+			if ( 'wpm-testimonial' !== get_post_type( $id ) || ! current_user_can( 'edit_post', $id ) ) {
+				$menu_order_arr[] = null;
+				continue;
+			}
+
 			$pos = ( $paged - 1 ) * $posts_per_page + ( $key + 1 );
-			$wpdb->update( $wpdb->posts, array( 'menu_order' => $pos ), array( 'ID' => intval( $id ) ) );
+			$wpdb->update( $wpdb->posts, array( 'menu_order' => $pos ), array( 'ID' => $id ) );
+			clean_post_cache( $id );
 			$menu_order_arr[] = $pos;
 		}
 

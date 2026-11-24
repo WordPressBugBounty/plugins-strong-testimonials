@@ -90,7 +90,9 @@ jQuery(document).ready(function ($) {
             var $orders = $(".menu-order");
             var obj = JSON.parse(data);
             var orderArray = $.map(obj, function (val, i) {
-              $orders.eq(i).html(val);
+              if (val !== null) {
+                $orders.eq(i).html(val);
+              }
             });
           })
           .done(function () {
