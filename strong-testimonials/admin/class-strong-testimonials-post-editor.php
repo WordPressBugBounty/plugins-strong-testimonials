@@ -162,7 +162,8 @@ class Strong_Testimonials_Post_Editor {
 		printf(
 			'<textarea id="%1$s" name="custom[%1$s]" class="custom-input">%2$s</textarea>',
 			esc_attr( $field['name'] ),
-			wp_kses_post( $post->{$field['name']} )
+			// Decode first so stored entities like &lt; still display as they did with wp_kses_post().
+			esc_textarea( html_entity_decode( (string) $post->{$field['name']}, ENT_QUOTES | ENT_HTML5, get_bloginfo( 'charset' ) ) )
 		);
 	}
 
